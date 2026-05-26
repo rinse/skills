@@ -1,0 +1,40 @@
+{
+  "skill_name": "playwright-cli-signin",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "GitHubにログインして、自分のリポジトリ一覧を取得してください。URLはhttps://github.com/settings/repositoriesです。",
+      "expected_output": "headful ブラウザを開いてユーザーにGitHubへのログインを依頼し、ログイン後に state-save でセッションを保存、headless で再起動して state-load でリポジトリ一覧ページを取得する",
+      "files": [],
+      "assertions": [
+        "playwright-cli open --headed --persistent を使って headful ブラウザを開いた",
+        "ユーザーにログインを依頼するメッセージを送った（なぜログインが必要かを説明している）",
+        "playwright-cli state-save コマンドを使った（--persistent state-save ではなく）",
+        "ログイン後に headless ブラウザで state-load を使ってセッションを引き継いだ"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "以前に保存した auth.json を使って、https://github.com/settings/repositories のリポジトリ一覧を取得してください。",
+      "expected_output": "まず既存の auth.json を使って headless でアクセスを試み、セッションが有効であればユーザーに再ログインを頼まずにページ取得まで完了する",
+      "files": [],
+      "assertions": [
+        "まず headless ブラウザで state-load auth.json を試みた",
+        "ユーザーに再ログインを要求しなかった（または要求しないことを示した）",
+        "リポジトリ一覧ページへのアクセスを試みた"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Googleアカウントにログインして、https://myaccount.google.com/personal-info から名前を確認してください。二段階認証が設定されています。",
+      "expected_output": "headful ブラウザを開いてユーザーにログインを依頼し、二段階認証に対応することを明示的に伝え、ログイン後にセッションを保存して情報を取得する",
+      "files": [],
+      "assertions": [
+        "playwright-cli open --headed --persistent を使って headful ブラウザを開いた",
+        "二段階認証（2FA）への対応をユーザーに伝えた",
+        "playwright-cli state-save コマンドを使った（--persistent state-save ではなく）",
+        "ユーザーにログインを依頼するメッセージを送った"
+      ]
+    }
+  ]
+}

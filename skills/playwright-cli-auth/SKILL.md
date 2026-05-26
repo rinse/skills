@@ -10,48 +10,90 @@ Make sure to read the playwright-cli skill as well.
 
 認証情報やログインセッションが必要になった場合、あなたはログインに必要な資格情報をユーザーに求めることはできません。
 なぜならユーザーの資格情報は決して他人に漏らしてはいけないものであり、生成 AI を運用している企業に対して送信するわけにはいかないためです。
-また生成 AI を運用する企業も、通常は個人情報や認証情報などの取り扱いに注意が必要な情報は入れてはいけないと規約で取り決めています。
 
 そのため、あなたはログインに必要な資格情報をユーザーに要求する代わりに、その時だけ headful なブラウザを表示して、ユーザーにログイン操作を行うことを要求し、取得したログインセッションを利用してその後の操作を行います。
 
-## ユーザーにログイン操作を代行させる手順
+## セッションの保存戦略
 
-以下はユーザーにログイン操作を代行してもらい、ログイン後の環境を得るための、具体的なステップ・バイ・ステップ手順です。
+playwright-cli には 2 種類のセッション保持方法があります。
 
-1. ブラウザを open します
-    `--headed` はユーザーがログイン操作を行うため、
-    `--persistent` はログインセッションの保存のために必要です。
+| 方法 | コマンド | 用途 |
+|------|----------|------|
+| 永続プロファイル | `open --persistent` | 同じマシンで継続的に使う場合。プロファイルにセッションを保持 |
+| 状態ファイル | `state-save` / `state-load` | セッションをファイルに書き出して headless セッションへ引き継ぐ |
 
-    ```bash
-    playwright-cli open --headed --persistent
-    ```
-2. ログインページに遷移します
-    ```bash
-    playwright-cli goto 'https://example.com'
-    ```
-3. ユーザーにログイン操作を要求します
-    - ユーザーになぜログインが必要なのかを説明します。
+基本的には **両方を組み合わせる** のが確実です。
+headful で `--persistent` ログイン → `state-save` でファイルにバックアップ → headless 再起動後に `state-load` で読み込み。
 
-    Example:
-    ```
-    ○○を行うにあたり、××へのログインが必要です。
-    ブラウザウィンドウを表示したので、ログインが完了したら報告してください。
+## ステップ 0: 既存セッションの確認
 
-    [Choice]
-    1. ログインが完了しました。
-    2. 別の手段を検討してください。（ユーザーの自由入力による代替案の提案）
-    ```
-4. 認証情報を保存します
-    認証情報の保存戦略はウェブサイトによって異なります。
-    `playwright-cli --help` の Storage セクションか playwright-cli Skill を参照して、
-    適切な `playwright-cli` コマンドを通じてどこに認証情報が保存されているかを調査し、
-    また認証情報を保存します。
-    通常は `playwright-cli --persistent state-save` を最初に試すべきです。
+ユーザーにログインを頼む前に、すでに有効なセッションがないかを確認します。
+毎回 headed ブラウザを起動してユーザーを煩わせないよう、まず headless で試みます。
 
-    > state-save [filename]       saves the current storage (authentication) state to a file
-5. headful ブラウザを閉じます
-    `playwright-cli close` コマンドでブラウザを閉じます。
-    引き続き `playwright-cli` でブラウザ操作を行いたい場合は、
-    `playwright-cli open --persistent` コマンドを実行して headless なブラウザを開きなおし、操作を続行します。
-    ユーザーから headful ブラウザを使うよう指示がある場合はこの限りではありません。
+```bash
+# 保存済み状態ファイルがある場合は試してみる
+playwright-cli open
+playwright-cli state-load auth.json   # ファイルがなければ次のステップへ
+playwright-cli goto 'https://example.com/dashboard'
+playwright-cli snapshot
+playwright-cli close
+```
 
+スナップショットを見てログイン後のページが表示されていれば、再ログインは不要です。
+ログインページにリダイレクトされた場合は、以下の手順に進みます。
+
+## ステップ 1–5: ユーザーにログインを依頼する手順
+
+既存セッションが使えない場合にのみ、以下を実施します。
+
+### 1. headful ブラウザを起動する
+
+`--headed` で画面を表示し、`--persistent` でプロファイルにセッションを保持します。
+
+```bash
+playwright-cli open --headed --persistent
+```
+
+### 2. ログインページに遷移する
+
+```bash
+playwright-cli goto 'https://example.com/login'
+```
+
+### 3. ユーザーにログイン操作を依頼する
+
+なぜログインが必要なのかを説明し、2FA（二段階認証）や OAuth のリダイレクト画面が表示される場合もあることを伝えます。
+
+```
+○○を行うにあたり、××へのログインが必要です。
+ブラウザウィンドウが開いているので、ログインが完了したら報告してください。
+二段階認証が必要な場合は、その操作も行ってください。
+
+[Choice]
+1. ログインが完了しました。
+2. 別の手段を検討してください。
+```
+
+### 4. 認証状態をファイルに保存する
+
+ログイン完了後、`state-save` で認証状態を `auth.json` に書き出します。
+これにより次回は headless でセッションを引き継げます。
+
+```bash
+playwright-cli state-save auth.json
+```
+
+### 5. headful ブラウザを閉じ、headless で続行する
+
+```bash
+playwright-cli close
+
+# headless で再起動して認証状態を読み込む
+playwright-cli open
+playwright-cli state-load auth.json
+playwright-cli goto 'https://example.com/dashboard'
+playwright-cli snapshot
+```
+
+スナップショットでログイン後のページが確認できれば成功です。
+ユーザーから headful を使い続けるよう指示がある場合は `playwright-cli open --headed --persistent` を代わりに使います。
