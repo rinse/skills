@@ -2,6 +2,11 @@
 
 ## スキルの一覧
 
+### gh-pr-create
+
+現在のブランチから GitHub の Pull Request を作成するスキル。
+差分の全体を読んでタイトルと本文を合成し、リポジトリに PR テンプレートがあればそれに従う。push はユーザーに任せ、作成前に内容を確認する。GitHub の PR 専用。
+
 ### gh-review
 
 GitHub の Pull Request に対してコードレビューを行うスキル。
