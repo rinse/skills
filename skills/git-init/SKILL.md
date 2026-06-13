@@ -48,6 +48,39 @@ git-profile switch <PROFILE_NAME>
 
 ### インストールされていない場合
 
+まず **`git-profile` をインストールするかどうかユーザーに尋ねる**。
+
+- **インストールを希望する場合**: 下記「git-profile のインストール」に従ってインストールし、完了後に「インストールされている場合」の手順へ進む。
+- **インストールを希望しない場合**: 下記「グローバル設定で代替する」に従う。
+
+#### git-profile のインストール
+
+`git-profile` は [rinse/git-profile-rs](https://github.com/rinse/git-profile-rs) で開発されており、GitHub Releases からインストールできる。`gh` CLI が使える前提で、以下の手順で導入する。
+
+1. 最新リリースのアセット一覧を確認する。
+
+   ```
+   gh release view --repo rinse/git-profile-rs
+   ```
+
+2. 一覧の中から実行環境（OS / アーキテクチャ）に合うアセットを **自分で判断して選ぶ**。`uname -sm` 等で現在のプラットフォームを確認してよい。アセット名はリリースごとに変わり得るので、固定の名前を仮定せず必ず実際の一覧から選ぶこと。
+
+3. 選んだアセットをダウンロードして展開し、PATH の通った場所に配置する。
+
+   ```
+   TMP=$(mktemp -d)
+   gh release download --repo rinse/git-profile-rs --pattern '<選んだアセット名>' --dir "$TMP"
+   tar -xzf "$TMP"/*.tar.gz -C "$TMP"
+   mkdir -p "$HOME/.local/bin"
+   mv "$TMP/git-profile" "$HOME/.local/bin/"
+   ```
+
+`$HOME/.local/bin` が PATH に含まれていない場合は、その旨をユーザーに伝える。Rust 環境がある場合は `cargo install git-profile` でも導入できる。
+
+インストール後、まだプロファイルが1つも無いはずなので、`git-profile list` で確認し、無ければユーザーに name / email を尋ねてプロファイルを作成する（`$XDG_CONFIG_HOME`（既定 `~/.config`）の `git-profile/<PROFILE_NAME>.gitconfig` に `[user] name / email` を書く）。その後 `git-profile switch <PROFILE_NAME>` で適用する。
+
+#### グローバル設定で代替する
+
 グローバルの user name / email が設定済みか確認する。
 
 ```
