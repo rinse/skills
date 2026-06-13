@@ -7,6 +7,11 @@
 現在のブランチから GitHub の Pull Request を作成するスキル。
 差分の全体を読んでタイトルと本文を合成し、リポジトリに PR テンプレートがあればそれに従う。push はユーザーに任せ、作成前に内容を確認する。GitHub の PR 専用。
 
+### gh-issue-create
+
+雑な記述から GitHub の Issue を起票するスキル。
+やりたいことを構造化された本文に合成し、リポジトリに ISSUE_TEMPLATE があればそれに従い、なければ概要・目的・制約・受け入れ条件のテンプレートを使う。作成前に内容を確認する。GitHub 専用。
+
 ### gh-review
 
 GitHub の Pull Request に対してコードレビューを行うスキル。
@@ -16,6 +21,11 @@ GitHub の Pull Request に対してコードレビューを行うスキル。
 
 GitHub の Pull Request をマージするスキル。
 主に squash merge を対象とし、差分の全体を読んで短く適切な squash commit メッセージを合成し、実行前に内容を確認する。GitHub の PR 専用。
+
+### gh-release
+
+最後のリリース以降の差分を読み、新しいセマンティックバージョンを切るスキル。
+トークンを食う差分の読解は Haiku の Subagent に委譲し、オーケストレーターがログと報告を突き合わせて bump 種別（major/minor/patch）を判断して次バージョンを算出する。リリースノートを合成して注釈付きタグを作成、任意で GitHub Release も作る。0.x の特例（破壊的変更でも minor）に対応し、push はユーザーに任せ、作成前に内容を確認する。
 
 ### gh-init
 
