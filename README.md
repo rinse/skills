@@ -17,6 +17,11 @@ GitHub の Pull Request に対してコードレビューを行うスキル。
 GitHub の Pull Request をマージするスキル。
 主に squash merge を対象とし、差分の全体を読んで短く適切な squash commit メッセージを合成し、実行前に内容を確認する。GitHub の PR 専用。
 
+### gh-init
+
+ローカルの git リポジトリに対して GitHub 上のリモートリポジトリを作成するスキル。
+`gh`（なければ GitHub MCP）でリポジトリを作成して `origin` として登録する。push はユーザーに任せる。
+
 ### git-commit
 
 git のコミットを行うスキル。

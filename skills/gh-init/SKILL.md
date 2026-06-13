@@ -1,0 +1,52 @@
+---
+name: gh-init
+description: Use this skill whenever creating a remote GitHub repository for the current local repo. Triggers on phrases like "リモートリポジトリを作成", "GitHub にリポジトリを作って", "create a GitHub repo", "gh repo create", "リモートを作って push したい", or any request to create a GitHub remote and register it as origin. Creates the repository (via gh or GitHub MCP), registers the origin remote, and hands push off to the user.
+---
+
+# GitHub Init
+
+ローカルの git リポジトリに対して、GitHub 上のリモートリポジトリを作成し `origin` として登録するためのスキルです。push はユーザー自身に行ってもらいます。
+
+認証はいずれも済んでいる前提とします。
+
+## 使用ツールの判定
+
+1. **`gh` コマンドが使える場合** → `gh` を使う（`command -v gh` で確認）
+2. **`gh` がなく GitHub MCP が使える場合** → GitHub MCP のリポジトリ作成ツールを使う
+3. **いずれもない場合** → どちらも利用できないためリモートリポジトリの作成を見送る旨をユーザーに伝えて終了する
+
+## リポジトリ名
+
+プロンプトの内容やディレクトリ名から名前を推測し、選択肢として提示する。
+
+1. `<推測した名前>`
+2. （ユーザーによる自由入力）
+
+## 公開 / 非公開
+
+選択肢として提示する。
+
+1. public
+2. private
+
+## 作成コマンド
+
+**`gh` の場合** — リポジトリを作成し、`origin` リモートを登録する。
+
+```
+gh repo create <名前> --public --source=. --remote=origin
+```
+
+- 非公開なら `--public` の代わりに `--private` を使う。
+
+**GitHub MCP の場合** — GitHub MCP のリポジトリ作成ツールで、決定した名前・公開設定でリポジトリを作成する。作成後、返ってきた URL を `git remote add origin <URL>` で登録する。
+
+## push
+
+**push はエージェントが実行せず、ユーザー自身に行ってもらう。** SSH 鍵のパスフレーズ入力が対話的に必要になる場合があり、`! ` で実行するサブシェルではパスフレーズを入力できず失敗するため。
+
+`origin` の登録まで終えたら、ユーザーに次の手順を案内する（push 先は常に明示する）。
+
+1. `Ctrl+Z` で Claude Code を一時停止する
+2. 自分のシェルで `git push origin <ブランチ名>` を実行する（ここでパスフレーズを入力できる）
+3. `fg` で Claude Code に戻ってくる
