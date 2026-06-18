@@ -52,6 +52,11 @@ git リポジトリを初期化するスキル。
 Kent Beck の "Canon TDD" の定義に基づいてテスト駆動開発を進めるスキル。
 テストリスト → Red → Green → Optionally Refactor のサイクルを1テストずつ回し、インターフェイス設計と実装設計を分けて「動かす」と「きれいにする」を同時にやらない規律を提供する。各ステップで陥りがちな間違いも示す。
 
+### okf-knowledge
+
+作業で得た知見を [Open Knowledge Format (OKF)](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) の knowledge bundle として残すスキル。
+「知見を貯めて」「知見をまとめて」をトリガーに、再利用価値のある知見を抽出して `knowledge/`（既定はプロジェクトルート直下）に OKF 準拠の concept ファイルとして書き出す。`index.md` は常に維持し、`log.md` は git 管理下なら作らず・非管理ならユーザーに確認（既存なら維持）、`AGENTS.md` に bundle へのポインタが無ければ追記を確認する。書式の機械的な踏襲より「何をどの粒度で concept にするか」の判断に重きを置く。
+
 ### playwright-cli-auth
 
 playwright-cli で認証をユーザーに行わせるスキル。
