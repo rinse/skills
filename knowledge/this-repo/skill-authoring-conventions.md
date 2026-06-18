@@ -35,7 +35,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Gotcha
 
-- `playwright-cli-auth/SKILL.md` の frontmatter は `name: playwright-cli-signin` で、**ディレクトリ名 `playwright-cli-auth` と一致していない**。全スキルを読み比べないと気づかない不整合。新規・改修時は name とディレクトリ名の一致を確認すること。
+- **`name` とディレクトリ名は必ず一致させる。** 全スキルを読み比べないと気づきにくい不整合の温床。実例として `playwright-cli-auth/SKILL.md` は以前 `name: playwright-cli-signin` でディレクトリ名と食い違っていた（現在は修正済み）。新規・改修時は name とディレクトリ名の一致を確認すること。
 
 # Citations
 

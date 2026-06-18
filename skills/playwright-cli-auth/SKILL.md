@@ -1,5 +1,5 @@
 ---
-name: playwright-cli-signin
+name: playwright-cli-auth
 description: Automates browser authentication and login flows using Playwright. Use when a website requires a logged-in session to complete a task - such as accessing dashboards, user accounts, or any page behind a login wall or any task where a persistent session must be established before proceeding.
 allowed-tools: Bash(playwright-cli:*)
 ---
