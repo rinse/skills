@@ -1,5 +1,7 @@
 # Skills
 
+このリポジトリの各スキルは `gh skill install` コマンドでインストールする前提です。
+
 ## スキルの一覧
 
 ### gh-pr-create
