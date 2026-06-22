@@ -1,6 +1,10 @@
 ---
 name: git-init
 description: Use this skill whenever initializing a git repository. This includes when the user asks to "git init", "git-init", set up a new repo, or initialize version control in a directory. Runs git init, switches the git profile (user name / email), and creates an empty initial commit.
+metadata:
+  author: rinse <rinse418@gmail.com>
+  license: MIT
+  source: https://github.com/rinse/skills
 ---
 
 # Git Init

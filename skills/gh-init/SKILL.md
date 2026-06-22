@@ -1,6 +1,10 @@
 ---
 name: gh-init
 description: Use this skill whenever creating a remote GitHub repository for the current local repo. Triggers on phrases like "リモートリポジトリを作成", "GitHub にリポジトリを作って", "create a GitHub repo", "gh repo create", "リモートを作って push したい", or any request to create a GitHub remote and register it as origin. Creates the repository (via gh or GitHub MCP), registers the origin remote, and hands push off to the user.
+metadata:
+  author: rinse <rinse418@gmail.com>
+  license: MIT
+  source: https://github.com/rinse/skills
 ---
 
 # GitHub Init
