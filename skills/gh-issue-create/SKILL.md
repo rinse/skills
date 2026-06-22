@@ -1,6 +1,10 @@
 ---
 name: gh-issue-create
 description: Use this skill whenever the user asks to create a GitHub issue. Triggers on phrases like "Issue を作って", "課題を起票", "create an issue", "open an issue", "Issue 立てて", or any request to file a GitHub issue from a rough description. This skill turns a rough idea into a clean, structured issue body, following the repository's ISSUE_TEMPLATE if present, selects appropriate labels from the repository's existing labels, and creates the issue after confirmation. It is GitHub-only — if the target is not a GitHub repository, this skill does not apply.
+metadata:
+  author: rinse <rinse418@gmail.com>
+  license: MIT
+  source: https://github.com/rinse/skills
 ---
 
 # GitHub Issue Create

@@ -1,6 +1,10 @@
 ---
 name: git-commit
 description: Use this skill whenever performing a git commit. This includes when the user asks to commit changes, create a commit, save progress to git, or any variation of "commit this/these changes". Also triggers when using /commit or when a workflow involves creating git commits as a step.
+metadata:
+  author: rinse <rinse418@gmail.com>
+  license: MIT
+  source: https://github.com/rinse/skills
 ---
 
 # Git Commit
