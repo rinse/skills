@@ -12,7 +12,7 @@ okf_version: "0.1"
 
 * [スキル執筆の規約](this-repo/skill-authoring-conventions.md) - 言語・命名・frontmatter・ファイル構成の取り決め
 * [スキル設計の思想](this-repo/skill-design-philosophy.md) - 「核」= 判断と機械作業の分離、合成主義、アクションスキルの共通骨格
-* [外向き操作の安全則](this-repo/external-action-safety.md) - 取り消しづらい操作は実行前に確認、push はユーザーへ委譲、保守的な既定
+* [外向き操作の安全則](this-repo/external-action-safety.md) - 取り消しづらい操作は実行前に確認、push はまず試し失敗時に委譲、保守的な既定
 * [ツール検出とフォールバック](this-repo/tool-gating-and-fallbacks.md) - 依存ツールの検出・導入提案・「未導入 ≠ 対象外」・MCP フォールバック
 * [Subagent 委譲と worktree の制約](this-repo/subagent-and-worktree.md) - 高コスト/並列作業の委譲とオーケストレーターによる判断の保持
 
