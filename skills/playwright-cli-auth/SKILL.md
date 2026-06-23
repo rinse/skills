@@ -2,9 +2,9 @@
 name: playwright-cli-auth
 description: Automates browser authentication and login flows using Playwright. Use when a website requires a logged-in session to complete a task - such as accessing dashboards, user accounts, or any page behind a login wall or any task where a persistent session must be established before proceeding.
 allowed-tools: Bash(playwright-cli:*)
+license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
-  license: MIT
   source: https://github.com/rinse/skills
 ---
 
