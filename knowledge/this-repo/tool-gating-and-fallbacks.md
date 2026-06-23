@@ -3,7 +3,7 @@ type: Convention
 title: ツール検出とフォールバック
 description: 依存ツールを検出し、未導入なら導入を提案し、「未導入」と「対象外」を区別し、GitHub MCP へフォールバックする本リポジトリ共通の前提処理。
 tags: [tooling, github, mcp, guards]
-timestamp: 2026-06-18T00:00:00Z
+timestamp: 2026-06-23T00:00:00Z
 ---
 
 外部ツール（主に `gh`、`git-profile`）に依存するスキルが共通して持つ、前提確認とフォールバックの作法。
@@ -39,6 +39,8 @@ timestamp: 2026-06-18T00:00:00Z
 - `gh-issue-create` / `gh-pr-create`: `--body-file`
 - `gh-review`: JSON を作って `--input`
 - `gh-release`: `--notes-file`
+
+一時ファイルの置き場所は**リポジトリの作業ツリーを汚さない**ことを優先する。`gh-issue-create` / `gh-pr-create` は「セッションで自由に読み書きできる一時ファイル（スクラッチ領域）があればそれを使い、無ければ標準の一時ファイル（`/tmp`）を使う」と明記している。作業ツリー直下（例: `pr-body.md`）に置くと、未追跡ファイルが残り、環境によっては後片付けの `rm` が許可で弾かれて消し残る。どこに作ったとしても後処理で片付ける。
 
 # テンプレートは検出 → フォールバック
 
