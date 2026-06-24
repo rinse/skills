@@ -1,6 +1,6 @@
 ---
 name: gh-review
-description: Use this skill whenever the user asks for a code review of a GitHub pull request. Triggers on phrases like "コードレビューをして", "レビューして", "code review", "review this PR", "PR をレビュー", or any request to review changes on a GitHub PR. This skill posts inline comments to specific lines of a GitHub PR with severity tags. It is GitHub-PR-only — if the target is not a GitHub PR, this skill does not apply.
+description: Use this skill whenever the user asks for a code review of a GitHub pull request. Triggers on phrases like "コードレビューをして", "レビューして", "PR をレビュー", "code review", "review this PR", or any request to review changes on a GitHub PR. It posts inline comments to specific lines with severity tags. GitHub-PR-only — if the target is not a GitHub PR, this skill does not apply.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

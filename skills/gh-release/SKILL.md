@@ -1,6 +1,6 @@
 ---
 name: gh-release
-description: Use this skill whenever the user asks to cut a release, bump the version, or tag a new version. Triggers on phrases like "リリースして", "バージョンを上げて", "タグを打って", "cut a release", "bump the version", "make a release", "create a GitHub release", or any request to publish a new semantic version from the current state. This skill reads the diff since the last release, decides the next semantic version, synthesizes release notes, creates an annotated tag, and optionally creates a GitHub Release after confirmation.
+description: Use this skill whenever the user asks to cut a release, bump the version, or tag a new version. Triggers on phrases like "リリースして", "バージョンを上げて", "タグを打って", "cut a release", "bump the version", "make a release", "create a GitHub release", or any request to publish a new semantic version. It decides the next semantic version from the diff since the last release, synthesizes release notes, and creates an annotated tag (and optionally a GitHub Release) after confirmation.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

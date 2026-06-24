@@ -1,6 +1,6 @@
 ---
 name: gh-pr-create
-description: Use this skill whenever the user asks to create a GitHub pull request. Triggers on phrases like "PR を作って", "プルリクを作成", "create a PR", "open a pull request", "PR 出して", or any request to open a pull request from the current branch. This skill collects the full diff, synthesizes a clean title and body, selects appropriate labels from the repository's existing labels, and creates the PR after confirmation. It is GitHub-PR-only — if the target is not a GitHub repository, this skill does not apply.
+description: Use this skill whenever the user asks to create a GitHub pull request. Triggers on phrases like "PR を作って", "プルリクを作成", "PR 出して", "create a PR", "open a pull request", or any request to open a PR from the current branch. It collects the full diff, synthesizes a title and body, selects labels from existing ones, and creates the PR after confirmation. GitHub-PR-only — if the target is not a GitHub repository, this skill does not apply.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

@@ -1,6 +1,6 @@
 ---
 name: gh-merge
-description: Use this skill whenever the user asks to merge a GitHub pull request. Triggers on phrases like "PR をマージ", "squash merge", "squash and merge", "マージして", "merge this PR", "merge the branch", or any request to merge a GitHub PR. This skill is primarily for squash-merging a PR with a clean, concise commit message synthesized from the diff. It is GitHub-PR-only — if the target is not a GitHub PR, this skill does not apply.
+description: Use this skill whenever the user asks to merge a GitHub pull request. Triggers on phrases like "PR をマージ", "マージして", "squash and merge", "merge this PR", "merge the branch", or any request to merge a GitHub PR. It primarily squash-merges a PR with a concise commit message synthesized from the diff. GitHub-PR-only — if the target is not a GitHub PR, this skill does not apply.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

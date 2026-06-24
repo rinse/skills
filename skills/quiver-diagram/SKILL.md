@@ -1,6 +1,6 @@
 ---
 name: quiver-diagram
-description: Build q.uiver.app commutative diagrams and return shareable URLs (with optional SVG previews). Use this skill whenever the user asks for a commutative diagram, pullback square, pushout, adjunction, natural transformation, pasting diagram, n-cell, tikz-cd-style diagram, or any diagram involving objects connected by arrows in category theory, algebra, topology, or related fields. Trigger on phrases like "draw a commutative diagram", "make a pullback diagram", "I need a quiver diagram", "give me a q.uiver URL", "diagram of this adjunction", or any time the user wants to visualise a categorical structure even if they don't explicitly say "quiver".
+description: Build q.uiver.app commutative diagrams and return shareable URLs (with optional SVG previews). Use this skill whenever the user asks for a commutative diagram, pullback/pushout square, adjunction, natural transformation, pasting diagram, n-cell, or tikz-cd-style diagram — any objects-and-arrows diagram in category theory, algebra, or topology. Triggers on phrases like "draw a commutative diagram", "I need a quiver diagram", "give me a q.uiver URL", or any time the user wants to visualise a categorical structure even without saying "quiver".
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
