@@ -72,3 +72,22 @@ playwright-cli で認証をユーザーに行わせるスキル。
 ### quiver-diagram
 
 [quiver](https://q.uiver.app/) 上で可換図式を作成して、そのリンクを作るスキル。
+
+## SKILL.md の検証
+
+`push` 時に GitHub Actions（`.github/workflows/validate-skills.yml`）が各 `skills/*/SKILL.md` を検証する。
+
+- **妥当性チェック（エラー、CI を失敗させる）**: [`skills-ref`](https://github.com/agentskills/agentskills/tree/main/skills-ref) reference library による Agent Skills 仕様準拠チェック（必須フィールド・文字数上限・命名規則・ディレクトリ名との一致など）。
+- **ベストプラクティスチェック（警告、CI は失敗させない）**: `name` + `description` の推定トークン数が、常時ロードされる Level 1 メタデータの目安である 100 トークンを超えていないか。
+
+ローカルで同じチェックを実行するには([uv](https://docs.astral.sh/uv/) を使う。`skills-ref` は実行時に自動でインストールされる):
+
+```sh
+uv run scripts/validate_skills.py
+```
+
+特定のスキルだけ検証する場合はパスを渡す（`--strict` を付けると警告もエラー扱いになる）:
+
+```sh
+uv run scripts/validate_skills.py skills/gh-pr-create --strict
+```
