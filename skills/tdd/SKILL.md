@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Use this skill whenever development should follow Test-Driven Development (Kent Beck's Canon TDD). Triggers on phrases like "TDDで", "テスト駆動開発", "TDDで開発して", "テストファーストで", "テストから書いて", "レッドグリーンリファクタ", "develop with TDD", "test-driven", "test-first", "red-green-refactor", or any request to implement a feature/fix by writing the test before the code. Also apply it when the user wants tests to drive an implementation, or asks to add behavior under TDD discipline. Walks through List → Red → Green → Refactor one test at a time, keeping interface design and implementation design separate.
+description: Use this skill whenever development should follow Test-Driven Development (Kent Beck's Canon TDD) — writing the test before the code. Triggers on phrases like "TDDで", "TDDで開発して", "テスト駆動開発", "テストファーストで", "テストから書いて", "レッドグリーンリファクタ", "develop with TDD", "test-driven", "test-first", "red-green-refactor", or any request to let tests drive an implementation.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
