@@ -73,6 +73,11 @@ playwright-cli で認証をユーザーに行わせるスキル。
 
 [quiver](https://q.uiver.app/) 上で可換図式を作成して、そのリンクを作るスキル。
 
+### inspect-web-traffic
+
+ブラウザ操作の裏で流れる通信を解析し、その操作を再現するワンショットスクリプト（既定は curl、指示があれば TypeScript / Python）を合成するスキル。
+まず playwright-cli 単体で通信を捕捉し、`request`／`response-body` を材料に「どのリクエスト群がその操作か」を選んでノイズを削り秘密情報をパラメータ化し、リプレイで再現を検証する（捕捉のダンプではなく合成が核）。自動化検知・captcha・ログインで阻まれたら、システムの Chrome を明示プロファイル + CDP ポート + netlog で起動して `attach --cdp` でアタッチし、検知回避とユーザー支援を得つつセッション全体を netlog に記録する。ブラウザの HTTP(S) 通信専用。
+
 ## SKILL.md の検証
 
 `push` 時に GitHub Actions（`.github/workflows/validate-skills.yml`）が各 `skills/*/SKILL.md` を検証する。

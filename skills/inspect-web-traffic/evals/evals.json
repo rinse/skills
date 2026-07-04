@@ -1,0 +1,42 @@
+{
+  "skill_name": "inspect-web-traffic",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "https://jsonplaceholder.typicode.com/todos/1 をブラウザで開いたときに飛ぶ API リクエストを解析して、同じレスポンスを返す curl を作ってください。",
+      "expected_output": "playwright-cli 単体で開いて requests/request で通信を捕捉し、対象リクエストを選んで curl を合成し、実際に curl を実行してブラウザのレスポンスと一致することを確認する",
+      "files": [],
+      "assertions": [
+        "playwright-cli open と goto でページを開いてから requests で通信を一覧した",
+        "request / request-headers / response-body などで対象リクエストの詳細を取得した",
+        "curl を合成した（既定言語が curl）",
+        "生成した curl を実際に実行してブラウザのレスポンスと突き合わせて再現を検証した",
+        "実 Chrome の CDP/netlog エスカレーションには入らなかった（検知・captcha・ログインが不要なため標準経路で完結）"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "あるサイトの検索操作を解析してスクリプト化したいのですが、自動化ブラウザとして検知されてブロックされます。ログインも必要です。Python で再現スクリプトを作ってください。",
+      "expected_output": "エスカレーション経路に入り、システムの Chrome を明示プロファイル+CDPポート+netlog で headful 起動し、ユーザーにログイン/検知回避を依頼し、attach --cdp で繋いで操作を捕捉し、Python の再現スクリプトを合成してリプレイ検証する",
+      "files": [],
+      "assertions": [
+        "自動化検知/ログインを理由にエスカレーション経路（実 Chrome）を選んだ",
+        "google-chrome を --remote-debugging-port と --user-data-dir（明示プロファイル）と --log-net-log を付けて headful で起動した",
+        "資格情報を要求せず、ユーザーにログイン/検知回避の操作を依頼した",
+        "playwright-cli attach --cdp で起動済み Chrome にアタッチした",
+        "Python で再現スクリプトを合成し、リプレイして再現を検証した"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "playwright で開いて通信を見たら、目的のトークン発行リクエストが requests に出てきません。ログイン直後に一度だけ飛ぶやつです。どう捕捉すればいいですか。",
+      "expected_output": "playwright のアタッチ後キャプチャ境界（アタッチ前の通信は requests に出ない）を説明し、実 Chrome を netlog 付きで起動してセッション全体を記録し、netlog から該当リクエストを探す方針を示す",
+      "files": [],
+      "assertions": [
+        "playwright はアタッチ/追跡開始より前の通信を requests に出さない、というキャプチャ境界を説明した",
+        "netlog を有効にした実 Chrome でセッション全体（認証フェーズ含む）を記録する方針を示した",
+        "netlog から目的のリクエストを探す（grep で当たりを付ける等）方法に触れた"
+      ]
+    }
+  ]
+}
