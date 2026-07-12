@@ -1,6 +1,6 @@
 ---
 name: strictness-ratchet
-description: Use this skill whenever enabling stricter compiler / linter / type-checker settings and burning down the resulting diagnostics — TypeScript strict, mypy --strict, ESLint tightening, clippy. Triggers on phrases like "strict モードにして", "lint を厳しくして", "警告を全部消して", "enable strict mode", "fix all warnings". Buckets diagnostics, dispatches mechanical fixes to cheap subagents, surfaces genuine bugs instead of silently fixing them, and never loosens the config again.
+description: Use when enabling stricter compiler / linter / type-checker settings and burning down the diagnostics — TypeScript strict, mypy --strict, clippy. Triggers on "strict モードにして", "lint を厳しくして", "警告を全部消して", "enable strict mode", "fix all warnings". Buckets diagnostics, delegates mechanical fixes to cheap subagents, reports genuine bugs, never loosens the config.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

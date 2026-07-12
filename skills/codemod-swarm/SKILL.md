@@ -1,6 +1,6 @@
 ---
 name: codemod-swarm
-description: Use this skill whenever a mechanical change must be applied across many files — API migrations, deprecated-pattern removal, library swaps, repo-wide rewrites beyond a regex. Triggers on phrases like "全ファイルで置き換えて", "一括で移行して", "このパターンを一掃して", "migrate all call sites", "replace X with Y everywhere". Splits work into scripted replacement, exemplar-guided Haiku shards, and judgment-needed residue; not for single-file edits or design-heavy changes.
+description: Use this skill whenever a mechanical change spans many files — API migrations, deprecated-pattern sweeps, library swaps. Triggers on "全ファイルで置き換えて", "一括で移行して", "このパターンを一掃して", "migrate all call sites", "replace X everywhere". Splits work into scripts, exemplar-guided Haiku shards, and residue; not for single-file or design-heavy changes.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

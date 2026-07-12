@@ -1,6 +1,6 @@
 ---
 name: test-hardening
-description: Use this skill whenever strengthening an existing test suite — adding tests to risky under-tested code, raising meaningful coverage, killing mutation survivors. Triggers on phrases like "テストを増やして", "テストを強化して", "カバレッジを上げて", "add more tests", "improve coverage", "harden the tests". Ranks targets by risk rather than coverage %, writes behavior specs before delegating, and rejects change-detector tests via mutation spot-checks. Not for TDD on new features (tdd) or bug reproduction (bug-repro).
+description: Use when strengthening the existing test suite — adding tests to risky under-tested code, killing mutation survivors. Triggers on "テストを増やして", "テストを強化して", "カバレッジを上げて", "add more tests", "improve coverage", "harden the tests". Ranks targets by risk (not coverage %), writes behavior specs before delegating, rejects change-detector tests. Not for TDD (tdd) or bug repro (bug-repro).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
