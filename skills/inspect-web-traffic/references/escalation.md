@@ -45,7 +45,7 @@ curl -s "http://localhost:${PORT}/json/version" --max-time 5
 
 ## 3. ユーザーに操作を依頼する
 
-ログイン・captcha・2FA は**あなたの代わりにユーザーが解く**。資格情報を要求してはいけない（[playwright-cli-auth スキル](../../playwright-cli-auth/SKILL.md) と同じ原則）。
+ログイン・captcha・2FA は**あなたの代わりにユーザーが解く**。資格情報を要求してはいけない（playwright-cli-auth スキルと同じ原則）。
 
 ```
 自動化検知（または captcha / ログイン）に阻まれたため、あなたの Chrome を開きました。
