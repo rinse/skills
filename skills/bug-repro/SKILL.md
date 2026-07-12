@@ -1,6 +1,6 @@
 ---
 name: bug-repro
-description: Use this skill to turn a vague bug report ("it breaks when...", "it crashes sometimes") into a minimal, deterministic failing test that reproduces the reported symptom. Triggers on phrases like "バグを再現して", "再現テストを書いて", "再現手順を特定", "最小再現", "reproduce this bug", "write a failing test for this bug", "minimal reproduction", "repro". Core disciplines — minimize the reproduction, and be honest when it cannot be reproduced (never fabricate a plausibly-failing test). Fixing is out of scope; hand the failing test to the tdd skill's Red step.
+description: Turn a vague bug report into a minimal, deterministic failing test that reproduces the reported symptom. Triggers on "バグを再現して", "再現テストを書いて", "再現手順を特定", "最小再現", "reproduce this bug", "write a failing test for this bug", "minimal reproduction", "repro". Minimize the repro; never fabricate one — report honestly when it cannot be reproduced. Fixing is out of scope (hand off to tdd).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

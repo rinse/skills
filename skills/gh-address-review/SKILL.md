@@ -1,6 +1,6 @@
 ---
 name: gh-address-review
-description: Use this skill to respond to review feedback on your own GitHub PR — read each reviewer comment, triage it into fix / push back / ask / explain, reply, and resolve threads. Triggers on phrases like "レビュー指摘に対応", "レビューコメントを処理", "レビューに対応して", "レビューを受ける", "address review comments", "respond to the review", "handle reviewer feedback". It owns the comment read → classify → reply → resolve loop; re-syncing the PR title/body/labels to the new diff is delegated to gh-pr-update. GitHub-PR-only — if the target is not a GitHub PR, this skill does not apply.
+description: Respond to review feedback on your own GitHub PR — triage each comment into fix / push back / ask / explain, then fix, reply, and resolve threads. Triggers on "レビュー指摘に対応", "レビューコメントを処理", "レビューに対応して", "レビューを受ける", "address review comments", "respond to the review", "handle reviewer feedback". Re-syncing the PR title/body afterwards is delegated to gh-pr-update. GitHub-PR-only.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

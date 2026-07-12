@@ -1,6 +1,6 @@
 ---
 name: doc-sync
-description: Use this skill whenever prose documentation (README, docs/) may have drifted from what the code actually does after a code change — CLI flags, API signatures, config keys, or file layout. Triggers on phrases like "README を最新にして", "ドキュメントを同期して", "ドキュメントが古くなってないか確認して", "update the docs to match the code", "sync documentation", "is the README stale". It re-synthesizes only the drifted sections from the current code, preserving style and structure; it does not rewrite docs wholesale, nor touch CHANGELOG or in-code comments.
+description: Check whether prose docs (README, docs/) drifted from what the code actually does — CLI flags, API signatures, config keys, file layout. Triggers on "README を最新にして", "ドキュメントを同期して", "ドキュメントが古くなってないか確認して", "update the docs to match the code", "sync documentation", "is the README stale". Re-synthesizes only drifted sections from current code, preserving style; never rewrites wholesale.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
