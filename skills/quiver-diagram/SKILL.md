@@ -1,6 +1,6 @@
 ---
 name: quiver-diagram
-description: Build q.uiver.app commutative diagrams and return shareable URLs (with optional SVG previews). Use this skill whenever the user asks for a commutative diagram, pullback/pushout square, adjunction, natural transformation, pasting diagram, n-cell, or tikz-cd-style diagram — any objects-and-arrows diagram in category theory, algebra, or topology. Triggers on phrases like "draw a commutative diagram", "I need a quiver diagram", "give me a q.uiver URL", or any time the user wants to visualise a categorical structure even without saying "quiver".
+description: Build q.uiver.app commutative diagrams and return shareable URLs, optionally with SVG previews. Use whenever the user wants an objects-and-arrows diagram in category theory or algebra — commutative squares, pullbacks, pushouts, adjunctions, natural transformations, tikz-cd-style diagrams. Triggers on "draw a commutative diagram", "quiver diagram", "q.uiver URL".
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -61,8 +61,9 @@ SVG with `quiver_preview.render_svg_file()` and inspect it.
 ### Step 4: Return both URL and preview
 
 Present the URL inline so the user can click it. If you generated an SVG
-preview, save it via `present_files` or similar so the user can verify the
-structure without opening the URL.
+preview, share the SVG file with the user via whatever file-presentation
+mechanism the harness provides, or just give its path, so the user can verify
+the structure without opening the URL.
 
 ## Inline-build cheatsheet (for simple diagrams)
 
@@ -156,14 +157,21 @@ from quiver_preview import render_svg_file
 render_svg_file(q, "/tmp/preview.svg", show_grid=False)
 ```
 
-To convert SVG → PNG so you can view it inline (requires `cairosvg`, install
-with `pip install cairosvg --break-system-packages` if missing):
+To convert SVG → PNG so you can view it inline, use `cairosvg`. Prefer an
+isolated environment rather than installing into the system Python:
 
-```python
+```bash
+uv run --with cairosvg python -c "
 import cairosvg
-cairosvg.svg2png(url="/tmp/preview.svg", write_to="/tmp/preview.png",
+cairosvg.svg2png(url='/tmp/preview.svg', write_to='/tmp/preview.png',
                  output_width=800)
+"
 ```
+
+or a venv (`python -m venv .venv && .venv/bin/pip install cairosvg`) if `uv`
+isn't available. Only fall back to `pip install cairosvg --break-system-packages`
+as a last resort, and ask the user before modifying the system Python
+environment this way.
 
 If `cairosvg` isn't available, just produce the SVG file — modern browsers
 and most editors render SVG natively, so the user can still inspect it.
@@ -192,7 +200,7 @@ print(q.to_url())
 
 # Optional preview
 from quiver_preview import render_svg_file
-render_svg_file(q, "/mnt/user-data/outputs/pullback_universal.svg")
+render_svg_file(q, "/tmp/pullback_universal.svg")  # or another scratch/temp directory
 ```
 
 Then surface the URL in the reply and present the SVG file.
