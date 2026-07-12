@@ -1,6 +1,6 @@
 ---
 name: gh-release
-description: Use this skill whenever the user asks to cut a release, bump the version, or tag a new version. Triggers on phrases like "リリースして", "バージョンを上げて", "タグを打って", "cut a release", "bump the version", "make a release", "create a GitHub release", or any request to publish a new semantic version. It decides the next semantic version from the diff since the last release, synthesizes release notes, and creates an annotated tag (and optionally a GitHub Release) after confirmation.
+description: Use this skill whenever the user asks to cut a release, bump the version, or tag a new version. Triggers on phrases like "リリースして", "バージョンを上げて", "cut a release", "bump the version". Decides the next semantic version from the diff since the last release, synthesizes notes, and creates an annotated tag (optionally a GitHub Release) after confirmation.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -34,18 +34,20 @@ metadata:
 - **タグ付け対象がデフォルトブランチでない場合** → 通常リリースはデフォルトブランチ（多くは `main`）から切る。別ブランチに居る場合は、その旨を伝えて本当にそこから切るかユーザーに確認する。
 - **作業ツリーに未コミットの変更がある場合** → タグはコミットを指すので、未コミットの変更はリリースに含まれない。その旨を伝え、先にコミットするか今の HEAD で進めるかをユーザーに確認する。
 - **`gh` コマンドの有無**（`command -v gh`）→ タグ作成だけなら `gh` は不要。GitHub Release も作る場合のみ必要。`gh` が無く Release も希望する場合は、その旨を伝えインストールするか尋ねる（希望すれば環境に合った方法で。公式は https://cli.github.com ）。タグ作成だけで十分なら `gh` 無しでも続行する。
+- **リモートより遅れていないか**（リモートがある場合のみ）→ `git fetch origin <ブランチ>` を実行し、`git rev-list --count HEAD..origin/<ブランチ>` を確認する。0 でなければローカル HEAD は origin より遅れている。その状態でタグを切ると古いコミットにリリースを打ってしまうため、その旨を伝え、pull してから進めるか今の HEAD のまま進めるかをユーザーに確認する。リモートが無いローカルのみのリポジトリの場合はこの確認をスキップしてよい。
 
 ## 2. 前バージョンの特定
 
-直近のリリースタグを特定します。
+直近のリリースタグを特定します。**HEAD から到達可能なタグ**の中から探すのが原則です（メンテナンスブランチや hotfix タグなど、別系列のタグを前バージョンとして拾わないため）。
 
 ```
+git tag --merged HEAD --sort=-version:refname
 git tag --list --sort=-version:refname
-git describe --tags --abbrev=0 2>/dev/null
 ```
 
-- **タグがある場合** → セマンティックバージョンとして最大のものを前バージョンとする。既存タグの prefix 規約（`v` の有無）を読み取り、新タグもそれに合わせる。
-- **タグが一つも無い場合** → 初回リリース。既定の初期バージョンは `0.1.0`。ユーザーが別の初期バージョンを指定すればそれに従う。
+- **HEAD から到達可能なタグがある場合** → その中でセマンティックバージョンとして最大のものを前バージョンとする。既存タグの prefix 規約（`v` の有無）を読み取り、新タグもそれに合わせる。
+- **リポジトリ全体の最大タグ（2 行目）が到達可能な最大タグ（1 行目）と異なる場合** → 別ブランチのリリース系列を誤って上書きしないよう、その食い違いをユーザーに提示し、どちらを前バージョンとして扱うか確認する。
+- **到達可能なタグが一つも無い場合** → 初回リリース。既定の初期バージョンは `0.1.0`。ユーザーが別の初期バージョンを指定すればそれに従う。
 
 以降、前バージョンを `<prev>`、これから打つバージョンを `<next>` とします。
 

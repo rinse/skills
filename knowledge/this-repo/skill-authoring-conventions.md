@@ -31,7 +31,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 - 単純なスキルは `SKILL.md` 1 枚（`git-commit`, `tdd`, `external-action-safety` 系の gh スキル）。
 - 大きなスキルは補助ファイルに分割し、SKILL.md から参照する。`quiver-diagram` が典型で、`scripts/`（Python エンコーダ・テンプレート）と `references/`（`format-spec.md`, `style-reference.md`）を持つ。これは Agent Skills の Level 3（段階的開示）の実例であり、詳しくは [段階的開示](/agent-skills/skill-format-and-loading.md) と [ベストプラクティス](/agent-skills/authoring-best-practices.md) を参照。
-- スキル間は相対リンクで参照し合う（例: `concurrent-dev` の本文から `../git-commit/SKILL.md`）。スキルは互いに合成される単位として書かれている（[スキル設計の思想](/this-repo/skill-design-philosophy.md) 参照）。
+- スキル間の参照はプレーンなスキル名の言及で行う。相対リンク（`../git-commit/SKILL.md` 等）はスキルが単体でインストールされると壊れるため使わない。スキルは互いに合成される単位として書かれている（[スキル設計の思想](/this-repo/skill-design-philosophy.md) 参照）。
 
 # Gotcha
 

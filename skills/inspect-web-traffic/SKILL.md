@@ -1,13 +1,13 @@
 ---
 name: inspect-web-traffic
-description: Capture the network traffic behind a browser action and build a one-shot script that reproduces it. Use this skill to inspect or reproduce a web request or API call, triggerd by phrases such as "ブラウザの通信を解析して", "ブラウザ操作を curl で再現して", "ブラウザ操作をスクリプト化して", or anything like that.
+description: Capture the network traffic behind a browser action and build a one-shot script that reproduces it. Use this skill to inspect or reproduce a web request or API call, triggered by phrases such as "ブラウザの通信を解析して", "ブラウザ操作を curl で再現して", "ブラウザ操作をスクリプト化して", or anything like that.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
   source: https://github.com/rinse/skills
 ---
 
-Make sure to read the playwright-cli skill as well.
+playwright-cli スキルが環境で利用可能なら、先にそちらも読むこと。
 
 ## このスキルの核
 
@@ -20,7 +20,7 @@ Make sure to read the playwright-cli skill as well.
 3. **秘密情報をパラメータ化する**（Cookie・`Authorization`・CSRF トークンを環境変数やプレースホルダに逃がし、値をそのまま埋め込まない）
 4. **リプレイで再現を検証する**（生成したスクリプトを実行し、ブラウザが得たレスポンスと突き合わせる）
 
-`playwright-cli request N` の出力を curl にそのまま書き写すのは**アンチパターン**。全体を読んで組み立て直す（[合成主義](../../knowledge/this-repo/skill-design-philosophy.md)）。
+`playwright-cli request N` の出力を curl にそのまま書き写すのは**アンチパターン**。全体を読んで組み立て直す（合成主義）。
 
 ## 前提の確認
 

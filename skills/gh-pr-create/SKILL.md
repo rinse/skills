@@ -1,6 +1,6 @@
 ---
 name: gh-pr-create
-description: Use this skill whenever the user asks to create a GitHub pull request. Triggers on phrases like "PR を作って", "プルリクを作成", "PR 出して", "create a PR", "open a pull request", or any request to open a PR from the current branch. It collects the full diff, synthesizes a title and body, selects labels from existing ones, and creates the PR after confirmation. GitHub-PR-only — if the target is not a GitHub repository, this skill does not apply.
+description: Use this skill whenever the user asks to create a GitHub pull request from the current branch. Triggers on phrases like "PR を作って", "プルリクを作成", "create a PR", "open a pull request". Reads the full diff to synthesize the title and body, selects existing labels, and confirms before creating. GitHub-only.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -33,6 +33,7 @@ metadata:
 - **`gh` コマンドが無い場合**（`command -v gh` で確認）→ このスキルは `gh` に依存する。未インストールならその旨を伝え、**インストールするかどうかユーザーに尋ねる**。希望する場合は実行環境（OS / パッケージマネージャ）に合った方法でインストールして続行する（方法は環境に応じて判断。公式は https://cli.github.com ）。希望しない場合はここで終了する。「`gh` が無い」ことと「GitHub リポジトリでない」ことは別物なので混同しない。
 - **そもそも GitHub リポジトリでない場合**（`gh` がリポジトリを認識しない／別ホストのリモート等）→ このスキルの対象外。その旨を伝えて終了する。
 - **現在ブランチがデフォルトブランチそのものの場合**（後述の base と同じ）→ PR は作成できない。ブランチを切るよう促して停止する。
+- **未コミットの変更がある場合**（`git status --porcelain` で確認）→ 未コミットの変更は PR の差分に含まれない。ユーザーにその旨を伝え、先にコミットするか（コミットする場合は `git-commit` の規約に従う。一行メッセージ・ファイルを明示列挙してステージング）、未コミットのまま進めるかを確認する。
 
 ## 2. base ブランチの特定
 
@@ -48,12 +49,17 @@ gh repo view --json defaultBranchRef --jq .defaultBranchRef.name
 
 PR の中身を理解するため、変更の全体を読みます。
 
+ローカルの `<base>` は origin より遅れていることがあり、それを基準にすると PR の実際の差分（GitHub 上で `<base>` との差として表示される内容）とずれた本文を合成してしまう。先に origin の base を取得してから、比較先を `origin/<base>` にします。
+
 ```
-git -P diff <base>...HEAD
-git --no-pager log <base>..HEAD
+git fetch origin <base>
+git -P diff origin/<base>...HEAD
+git --no-pager log origin/<base>..HEAD
 ```
 
-`git -P diff <base>...HEAD`（3点）は、`<base>` から分岐したあとの差分を見せます。これとコミットログの両方から、PR が「なぜ・何を」変えるのかを把握します。
+`git -P diff origin/<base>...HEAD`（3点）は、origin の `<base>` から分岐したあとの差分を見せます。これとコミットログの両方から、PR が「なぜ・何を」変えるのかを把握します。
+
+`git fetch` がネットワーク等の事情で失敗した場合は、ローカルの `<base>` で続行してよい（ただしローカル base が古いと差分がずれうることは意識しておく）。
 
 ## 4. 本文テンプレートの判定
 

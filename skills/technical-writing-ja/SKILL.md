@@ -1,8 +1,8 @@
 ---
 name: technical-writing-ja
-description: 日本語の技術文書（書籍の章、記事、解説テキスト）を執筆・レビューする際に使うスキル。「技術文章を書いて」「文章を直して」「文書をレビューして」「日本語技術文書の規範に従って」など、日本語技術文書の品質を上げたい場面で使う。整形・段落構成・論証の厳密さ・読み手の負荷管理・演出の抑制・LLMっぽい表現の禁止・冗長の排除の規範を提供する。
+description: Japanese technical writing standards — formatting, paragraph construction, rigorous argumentation, reader-load management, restrained rhetoric, and banned LLM-ish phrasing. Use when writing or reviewing Japanese technical documents (book chapters, articles, explanatory text). Triggers on phrases like "技術文章を書いて", "文章を直して", "文書をレビューして", "日本語技術文書の規範に従って".
 metadata:
-  citation: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d
+  source: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d
 ---
 
 # 日本語技術文書の文章規範
@@ -59,7 +59,7 @@ metadata:
 - 抽象的な言い回しの指す内容が一意に決まらないときは丸括弧で特定する。
 - 新しい例や場面を追加するときは前の例と何が違うのか、なぜもう一つ必要なのかを前置きする。
 - 章冒頭や節の導入では例に関係しない過剰な詳細を詰め込まない。
-- その節の問い・帰結に関係しない過剰な詳細だけをomitする。
+- その節の問い・帰結に関係しない過剰な詳細は省く。
 
 ## 視点と語り
 
