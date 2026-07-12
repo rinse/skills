@@ -13,6 +13,13 @@ metadata:
 
 認証はいずれも済んでいる前提とします。
 
+## 0. 前提: ローカルの git リポジトリが必要
+
+このスキルはローカルの git リポジトリが存在することが前提です（`gh repo create --source=.` は git リポジトリでないと失敗します）。
+
+- **すでに git リポジトリの場合** → そのまま次に進む。
+- **git リポジトリでない場合** → このスキルの対象外である旨を伝える。`git-init` スキルが利用可能なら、まずそれで初期化してから改めてこのスキルを呼び出すよう案内する。
+
 ## 使用ツールの判定
 
 1. **`gh` コマンドが使える場合** → `gh` を使う（`command -v gh` で確認）
@@ -33,6 +40,17 @@ metadata:
 1. public
 2. private
 
+## 作成先アカウント
+
+どのアカウント / organization にリポジトリを作るかを確認する。既定は認証中のユーザーアカウントで、`gh api user --jq .login` 等で確認できる。
+
+1. `<認証中のユーザーアカウント>`（既定）
+2. 指定の organization（ユーザーによる自由入力）
+
+organization に作る場合、作成コマンドは `gh repo create <org>/<名前> ...` の形式になる。
+
+リポジトリ作成は外向きの操作（GitHub 上に公開の資産ができ、取り消しづらい）なので、**名前・公開設定・作成先アカウントの 3 点をユーザーに提示し、了承を得てから**実行する。
+
 ## 作成コマンド
 
 **`gh` の場合** — リポジトリを作成し、`origin` リモートを登録する。
@@ -42,8 +60,9 @@ gh repo create <名前> --public --source=. --remote=origin
 ```
 
 - 非公開なら `--public` の代わりに `--private` を使う。
+- organization に作る場合は `<名前>` を `<org>/<名前>` にする（例: `gh repo create <org>/<名前> --public --source=. --remote=origin`）。
 
-**GitHub MCP の場合** — GitHub MCP のリポジトリ作成ツールで、決定した名前・公開設定でリポジトリを作成する。作成後、返ってきた URL を `git remote add origin <URL>` で登録する。
+**GitHub MCP の場合** — GitHub MCP のリポジトリ作成ツールで、決定した名前・公開設定・作成先アカウント（organization）でリポジトリを作成する。作成後、返ってきた URL を `git remote add origin <URL>` で登録する。
 
 ## push
 

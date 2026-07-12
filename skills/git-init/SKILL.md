@@ -59,7 +59,20 @@ git-profile switch <PROFILE_NAME>
 
 #### git-profile のインストール
 
-`git-profile` は [rinse/git-profile-rs](https://github.com/rinse/git-profile-rs) で開発されており、GitHub Releases からインストールできる。`gh` CLI が使える前提で、以下の手順で導入する。
+`git-profile` は [rinse/git-profile-rs](https://github.com/rinse/git-profile-rs) で開発されており、GitHub Releases からインストールできる。以下の手順で導入する。
+
+##### `gh` CLI が使えるか確認
+
+```
+command -v gh
+```
+
+- **`gh` がある場合** → 以下の手順でインストールする。
+- **`gh` がない場合** → **`gh` をインストールするかどうかユーザーに尋ねる**（公式 https://cli.github.com ）。
+  - インストールを希望する場合: 実行環境に合った方法で `gh` を導入してから、以下の手順に進む。
+  - インストールを希望しない場合: Rust 環境がある場合は `cargo install git-profile` で導入する。それも無い場合は「グローバル設定で代替する」に従う。
+
+##### 導入手順
 
 1. 最新リリースのアセット一覧を確認する。
 
@@ -69,17 +82,26 @@ git-profile switch <PROFILE_NAME>
 
 2. 一覧の中から実行環境（OS / アーキテクチャ）に合うアセットを **自分で判断して選ぶ**。`uname -sm` 等で現在のプラットフォームを確認してよい。アセット名はリリースごとに変わり得るので、固定の名前を仮定せず必ず実際の一覧から選ぶこと。
 
-3. 選んだアセットをダウンロードして展開し、PATH の通った場所に配置する。
+3. 選んだアセットをダウンロードし、**アセットの形式（tar.gz / zip / 生バイナリ）を確認した上で**それに応じて展開し、展開物の中から `git-profile` の実行ファイルを特定して PATH の通った場所に配置する。
 
    ```
    TMP=$(mktemp -d)
    gh release download --repo rinse/git-profile-rs --pattern '<選んだアセット名>' --dir "$TMP"
-   tar -xzf "$TMP"/*.tar.gz -C "$TMP"
-   mkdir -p "$HOME/.local/bin"
-   mv "$TMP/git-profile" "$HOME/.local/bin/"
+   ls "$TMP"
    ```
 
-`$HOME/.local/bin` が PATH に含まれていない場合は、その旨をユーザーに伝える。Rust 環境がある場合は `cargo install git-profile` でも導入できる。
+   例えば tar.gz の場合は次のように展開し、中身を確認してから実行ファイルを配置する。
+
+   ```
+   tar -xzf "$TMP"/<アセット名>.tar.gz -C "$TMP"
+   find "$TMP" -type f -perm -u+x   # 展開後の実行ファイルを確認する
+   mkdir -p "$HOME/.local/bin"
+   mv "$TMP/<確認した実行ファイル>" "$HOME/.local/bin/git-profile"
+   ```
+
+   zip の場合は `unzip`、生バイナリの場合は展開不要でそのまま配置するなど、実際のアセット形式に応じて判断すること。
+
+`$HOME/.local/bin` が PATH に含まれていない場合は、その旨をユーザーに伝える。
 
 インストール後、まだプロファイルが1つも無いはずなので、`git-profile list` で確認し、無ければユーザーに name / email を尋ねてプロファイルを作成する（`$XDG_CONFIG_HOME`（既定 `~/.config`）の `git-profile/<PROFILE_NAME>.gitconfig` に `[user] name / email` を書く）。その後 `git-profile switch <PROFILE_NAME>` で適用する。
 

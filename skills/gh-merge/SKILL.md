@@ -54,6 +54,15 @@ gh pr view --json number,title,headRefName,baseRefName,url,mergeable,mergeStateS
 
 既定は **squash merge** です。ユーザーが merge commit / rebase を明示した場合のみそれに従います。
 
+リポジトリ設定でマージ方式そのものが無効化されている場合、`gh pr merge --squash` 等はマージ方式を決めても実行段階で失敗します。方式を決める前に、リポジトリで許可されているマージ方式を確認してください。
+
+```
+gh repo view --json squashMergeAllowed,mergeCommitAllowed,rebaseMergeAllowed
+```
+
+- 既定の squash（`squashMergeAllowed`）が無効な場合 → その旨をユーザーに伝え、許可されている方式（merge commit / rebase）のうちどれを使うか確認する。
+- ユーザーが明示した方式が無効化されている場合も同様に、その旨を伝えて代替の方式を確認する。
+
 - **squash（既定）** → 4〜5 でメッセージを合成し、`--squash --subject ... --body ""` でマージする。
 - **merge commit** → メッセージは GitHub のデフォルトのまま。`--merge` でマージする（メッセージを合成しない）。
 - **rebase** → コミットメッセージの合成は不要。`--rebase` でマージする。
