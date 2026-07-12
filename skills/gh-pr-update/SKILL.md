@@ -1,6 +1,6 @@
 ---
 name: gh-pr-update
-description: Use this skill whenever an existing GitHub PR's title, description, or labels may have drifted from what the PR actually changes — e.g. after you address code-review feedback, take additional instructions on an open PR, or otherwise modify a PR. Triggers on phrases like "PR を修正して", "レビューの指摘に対応して", "指摘に対応して", "PR の説明を更新して", "PR を最新にして", "update the PR description", "fix up this PR", "address the review comments". It re-synthesizes the title, body, and labels from the current diff via `gh pr edit`. It does not create PRs (use gh-pr-create) or merge them; GitHub-PR-only — if the target is not a GitHub PR, this skill does not apply.
+description: Use this skill after modifying an open GitHub PR (e.g. addressing review feedback) so its title, body, and labels match the current diff. Triggers on phrases like "PR の説明を更新して", "レビューの指摘に対応して", "update the PR description", "fix up this PR". Re-synthesizes metadata from the full current diff via gh pr edit; GitHub-PR-only, does not create or merge PRs.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
