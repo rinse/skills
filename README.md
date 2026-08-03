@@ -20,6 +20,11 @@
 
 ## スキルの一覧
 
+### kickoff
+
+プロジェクトを一から立ち上げるスキル。
+`git-init` → `gh-init` でリポジトリを整え、`gh skill install` でプロジェクトの baseline スキル（`git-commit` / `okf-knowledge` / `technical-writing-ja` / `concurrent-dev` は常時、他の `git-*` はユーザー選択、`gh-*` はリモート作成時のみ全導入）を入れる。いずれのツール・スキルも無ければスキップする。最後に `README.md`（概要と docs/ へのリンク集）・`AGENTS.md`（概要とドキュメント管理規則、docs/・knowledge/ へのリンク）を軽量に作成し、`git-commit` でコミットして終了する。
+
 ### gh-pr-create
 
 現在のブランチから GitHub の Pull Request を作成するスキル。
