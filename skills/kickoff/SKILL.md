@@ -1,6 +1,6 @@
 ---
 name: kickoff
-description: Use this skill whenever bootstrapping a brand-new project from scratch — turning an empty directory into a working repo. Triggers on phrases like "プロジェクトを一から作って", "新規プロジェクトを立ち上げて", "kick off a new project", "bootstrap this repo", "set up a fresh project from scratch", or any request to initialize a brand-new codebase end-to-end (not for adding a feature to an existing project, and not plain "git init" alone — use git-init for that). Sets up the repo via git-init/gh-init, installs the project's baseline skill set via `gh skill install` (git-commit, okf-knowledge, technical-writing-ja, concurrent-dev always; other git-* by choice; all gh-* if a remote exists), skipping any step whose tool isn't available, then writes minimal README.md/AGENTS.md splitting docs into docs/ (human) and knowledge/ (agent), and commits them via git-commit.
+description: Use this skill whenever bootstrapping a brand-new project from scratch — turning an empty directory into a working repo. Triggers on phrases like "プロジェクトを一から作って", "新規プロジェクトを立ち上げて", "kick off a new project", "bootstrap this repo", "set up a fresh project from scratch", or any request to initialize a brand-new codebase end-to-end (not for adding a feature to an existing project, and not plain "git init" alone — use git-init for that). Sets up the repo via git-init/gh-init, installs the project's baseline skill set via `gh skill install` (git-commit, okf-knowledge, technical-writing-ja, concurrent-dev always; other git-* by choice; all gh-* if a remote exists — never git-init/gh-init, which are init-only), skipping any step whose tool isn't available, then writes minimal README.md/AGENTS.md splitting docs into docs/ (human) and knowledge/ (agent), and commits them via git-commit.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -58,8 +58,10 @@ metadata:
 取得した一覧をもとに、次の3グループで導入対象を決める。
 
 - **常時導入**（基本的にすべてのリポジトリで入れる）: `git-commit`, `okf-knowledge`, `technical-writing-ja`, `concurrent-dev`。一覧に無いものは黙ってスキップし、その旨を伝える。
-- **`git-*`（`git-commit` を除く）**: `git-init` や `git-bisect-run` のような他の `git-*` スキルは、ユーザーの好みが分かれるところなのでインストール前に選ばせる。一覧から `git-*` かつ `git-commit` 以外のものを列挙し、AskUserQuestion（複数選択可）でどれを入れるか確認する。1つも選ばれなければ導入しない。
+- **`git-*`（`git-commit` を除く）**: `git-bisect-run` のような他の `git-*` スキルは、ユーザーの好みが分かれるところなのでインストール前に選ばせる。一覧から `git-*` かつ `git-commit` 以外のものを列挙し、AskUserQuestion（複数選択可）でどれを入れるか確認する。1つも選ばれなければ導入しない。
 - **`gh-*`**: 手順 2-3 で確定した通りリモートがある場合のみ、一覧にある `gh-*` スキルを**すべて**導入する。リモートが無い場合はこのグループを丸ごと見送る（GitHub 連携スキルはリモートがあって初めて使い道があるため）。
+
+**`git-init` と `gh-init` は導入対象から除外する**（ユーザーに選ばせもしない）。どちらもプロジェクトの初期化にしか使わず、立ち上げが済んだ後のプロジェクトでは発火する場面が無いため、プロジェクトローカルに入れる価値がありません。これらはユーザーのグローバル環境に置いておくべきスキルです。
 
 ### 3-3. 導入を実行する
 
