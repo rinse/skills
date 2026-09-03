@@ -1,6 +1,33 @@
 # Skills
 
-このリポジトリの各スキルは `gh skill install` コマンドでインストールする前提です。
+このリポジトリのスキルは、プラグインとしてまとめて入れるか、`gh skill install` で個別に入れます。
+
+## インストール
+
+### プラグインとしてまとめて入れる
+
+リポジトリのルートがそのままプラグイン（`.claude-plugin/plugin.json`）兼マーケットプレイス（`.claude-plugin/marketplace.json`）になっていて、Claude Code と Copilot CLI の両方が同じファイルを読みます。
+
+Claude Code:
+
+```sh
+claude plugin marketplace add rinse/skills
+claude plugin install rinse-skills@rinse --scope project
+```
+
+Copilot CLI:
+
+```sh
+copilot plugin install rinse/skills
+```
+
+Claude Code では各スキルが `rinse-skills:<skill>` の名前空間に入ります（例: `/rinse-skills:concurrent-dev`）。
+
+### 個別に入れる
+
+```sh
+gh skill install rinse/skills concurrent-dev
+```
 
 ## スキル管理のベストプラクティス
 

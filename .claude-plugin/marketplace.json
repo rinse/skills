@@ -1,0 +1,16 @@
+{
+  "name": "rinse",
+  "owner": {
+    "name": "rinse",
+    "email": "rinse418@gmail.com"
+  },
+  "description": "rinse's agent skills, packaged as one plugin.",
+  "plugins": [
+    {
+      "name": "rinse-skills",
+      "source": "./",
+      "description": "Agent skills for git/GitHub workflows, TDD, concurrent development with subagents, and Japanese technical writing.",
+      "version": "0.1.0"
+    }
+  ]
+}
