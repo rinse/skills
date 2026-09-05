@@ -18,7 +18,7 @@ Best practices (warnings, do not fail CI unless --strict):
 Usage:
     python3 scripts/validate_skills.py [--strict] [path ...]
 
-    With no path arguments, validates every skills/*/ directory.
+    With no path arguments, validates every skills/*/ and plugins/*/skills/*/ directory.
 """
 
 import argparse
@@ -47,8 +47,8 @@ def estimate_tokens(text: str) -> int:
 
 
 def discover_skill_dirs() -> list[Path]:
-    skills_dir = REPO_ROOT / "skills"
-    return sorted(p.parent for p in skills_dir.glob("*/SKILL.md"))
+    found = list(REPO_ROOT.glob("skills/*/SKILL.md")) + list(REPO_ROOT.glob("plugins/*/skills/*/SKILL.md"))
+    return sorted(p.parent for p in found)
 
 
 def check_best_practices(skill_dir: Path) -> list[str]:

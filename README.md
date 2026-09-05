@@ -1,33 +1,24 @@
 # Skills
 
-このリポジトリのスキルは、プラグインとしてまとめて入れるか、`gh skill install` で個別に入れます。
+このリポジトリのスキルは `gh skill install` で個別に入れます。フックと組になっているものは `plugins/` にプラグインとして置いてあり、`claude plugin install` で入れます。
 
 ## インストール
 
-### プラグインとしてまとめて入れる
-
-リポジトリのルートがそのままプラグイン（`.claude-plugin/plugin.json`）兼マーケットプレイス（`.claude-plugin/marketplace.json`）になっていて、Claude Code と Copilot CLI の両方が同じファイルを読みます。
-
-Claude Code:
-
-```sh
-claude plugin marketplace add rinse/skills
-claude plugin install rinse-skills@rinse --scope project
-```
-
-Copilot CLI:
-
-```sh
-copilot plugin install rinse/skills
-```
-
-Claude Code では各スキルが `rinse-skills:<skill>` の名前空間に入ります（例: `/rinse-skills:concurrent-dev`）。
-
-### 個別に入れる
+### スキルを個別に入れる
 
 ```sh
 gh skill install rinse/skills concurrent-dev
 ```
+
+### プラグインを入れる
+
+```sh
+claude plugin marketplace add rinse/skills
+claude plugin install clean-rewrite@rinse --scope project
+```
+
+プラグインのスキルは `<plugin>:<skill>` の名前空間に入ります（例: `/clean-rewrite:clean-rewrite`）。
+`gh skill install` はプラグイン内のスキルも見つけますが、Claude Code が読まない二段のパス（`.claude/skills/<plugin>/<skill>/`）に置くので、プラグインは `claude plugin install` で入れてください。
 
 ## スキル管理のベストプラクティス
 
@@ -126,6 +117,7 @@ Kent Beck の "Canon TDD" の定義に基づいてテスト駆動開発を進め
 
 既存のドキュメント・コメント・docstring を、編集痕を残さずに書き直すスキル。
 核は「成果物は自分の過去の版と、自分を生んだ会話を知らない」── 変更を旧文への差分として当てるのではなく、書き直す単位（段落・コメントブロック・節）について変更後に成り立つ事実を先に揃え、旧文の言い回しを捨ててその事実だけから書く。「B ではなく C」「以前は…だったが」「注:」「// changed from」といった残滓を一発書き判定（初見の読者が編集の跡に気づけないか）で検査し、変更点と理由は返信・コミットメッセージ・PR 本文へ流す。CHANGELOG・ADR・移行ガイドのように履歴が内容そのものである文書には適用しない。
+`plugins/clean-rewrite/` のプラグインとして配布し、Stop フックを同梱する。フックは、ファイルを編集したターンの終わりに一度だけ停止を保留し、そのターンで編集したファイルの文章を clean-rewrite で点検させる。
 
 ### playwright-cli-auth
 

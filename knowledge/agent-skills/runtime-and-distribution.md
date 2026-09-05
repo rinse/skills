@@ -17,7 +17,7 @@ timestamp: 2026-06-18T00:00:00Z
   - **プロジェクト用**: `.claude/skills/`
   - Claude Code Plugins 経由でも共有可能。
 - このリポジトリは `skills/` を**オーサリング元**とし、`gh skill install` 等で上記の有効パスへ導入する運用（README 参照）。`skills/` に置いただけではセッションでアクティブにならない点に注意。
-- リポジトリのルートは `.claude-plugin/plugin.json`（プラグイン）と `.claude-plugin/marketplace.json`（`source: "./"` で自分自身を指すマーケットプレイス）を持ち、全スキルを 1 プラグイン `rinse-skills` としてまとめて導入できる。Copilot CLI も同じ `.claude-plugin/` を読むので、両者で 1 つのレイアウトを共有している。
+- スキルとフックを組にして配るものは `plugins/<name>/` にプラグインとして置き、ルートの `.claude-plugin/marketplace.json` から `source: "./plugins/<name>"` で参照する。プラグインの `skills/` は `gh skill install` でも見つかるが、`.claude/skills/<plugin>/<skill>/` の二段パスに置かれ Claude Code はそこを読まないので、プラグインは `claude plugin install` で入れる。
 
 # サーフェス間で同期しない
 

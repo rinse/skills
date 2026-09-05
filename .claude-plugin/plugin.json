@@ -1,8 +1,0 @@
-{
-  "name": "rinse-skills",
-  "version": "0.1.0",
-  "description": "Agent skills for git/GitHub workflows, TDD, concurrent development with subagents, and Japanese technical writing.",
-  "author": { "name": "rinse", "email": "rinse418@gmail.com" },
-  "license": "MIT",
-  "repository": "https://github.com/rinse/skills"
-}

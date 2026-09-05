@@ -1,0 +1,8 @@
+{
+  "name": "clean-rewrite",
+  "version": "0.1.0",
+  "description": "Rewrites edited prose without edit residue, and a Stop hook that runs the check on every file edited in a turn.",
+  "author": { "name": "rinse", "email": "rinse418@gmail.com" },
+  "license": "MIT",
+  "repository": "https://github.com/rinse/skills"
+}

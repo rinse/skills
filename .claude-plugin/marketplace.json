@@ -4,12 +4,12 @@
     "name": "rinse",
     "email": "rinse418@gmail.com"
   },
-  "description": "rinse's agent skills, packaged as one plugin.",
+  "description": "rinse's agent skills and plugins.",
   "plugins": [
     {
-      "name": "rinse-skills",
-      "source": "./",
-      "description": "Agent skills for git/GitHub workflows, TDD, concurrent development with subagents, and Japanese technical writing.",
+      "name": "clean-rewrite",
+      "source": "./plugins/clean-rewrite",
+      "description": "clean-rewrite skill plus a Stop hook that runs it on the files edited in each turn.",
       "version": "0.1.0"
     }
   ]
