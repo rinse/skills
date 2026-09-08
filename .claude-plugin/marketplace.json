@@ -10,7 +10,7 @@
       "name": "clean-rewrite",
       "source": "./plugins/clean-rewrite",
       "description": "clean-rewrite skill plus a Stop hook that runs it on the files edited in each turn.",
-      "version": "0.1.0"
+      "version": "0.2.0"
     }
   ]
 }
