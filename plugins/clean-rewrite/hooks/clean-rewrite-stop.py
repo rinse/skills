@@ -47,6 +47,6 @@ except OSError:
 if not files:
     sys.exit(0)
 print(json.dumps({"decision": "block", "reason":
-    "このターンで編集したファイルの文章（ドキュメント・コメント・docstring）に編集痕が残っていないか、"
+    "このターンで編集したファイルに編集痕（文章の残滓、コードの互換経路や旧概念を指す名前）が残っていないか、"
     "clean-rewrite スキルを呼び出して点検し、必要なら書き直してください。対象: " + ", ".join(sorted(files))
-    + "。コード本体は変更しないこと。"}, ensure_ascii=False))
+    + "。振る舞いは変えないこと。"}, ensure_ascii=False))

@@ -1,6 +1,6 @@
 ---
 name: clean-rewrite
-description: Use whenever editing existing prose (docs, README, comments, docstrings), including doc/comment updates alongside a code change. Triggers on "修正して", "書き換えて", "更新して", "反映して", "fix the docs", "update the comment", "編集痕を消して", "経緯を消して", "一発で書いたようにして". Rewrites the affected unit from its updated facts so it reads as written once, with no trace of old wording, the change, or its reason (those go to the reply and commit message). Not for CHANGELOG/ADR/migration guides.
+description: Use whenever editing existing prose (docs, README, comments, docstrings) or code. Triggers on "修正して", "書き換えて", "更新して", "反映して", "fix the docs", "update the comment", "編集痕を消して", "経緯を消して", "一発で書いたようにして". Rewrites the affected unit from its updated facts so it reads as written once: no "not X but Y", no compat dual paths, no names for concepts that no longer exist, no history in comments (those go to the reply and commit message). Not for CHANGELOG/ADR/migration guides.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -9,7 +9,7 @@ metadata:
 
 # Clean rewrite（編集痕を残さない書き直し）
 
-既存のドキュメント・コメント・docstring を変更するとき、変更を「旧文への差分」ではなく「事実集合の更新と、その単位の再描画」として行うスキルです。
+既存のドキュメント・コメント・docstring・コードを変更するとき、変更を「旧文への差分」ではなく「事実集合の更新と、その単位の再描画」として行うスキルです。
 
 **このスキルの核は一文で言えます。成果物は、自分の過去の版と、自分を生んだ会話を知らない。**
 ソースコードもドキュメントも、含んでよいのは執筆時点で真である内容だけです。
@@ -42,6 +42,8 @@ Edit ツールの old_string / new_string 方式もこれを助長します。
 - **変更の物語化**：「以前は…だったが、…になった」「previously」「used to」「no longer」「now」。文書に時間軸が持ち込まれている。
 - **理由の混入**：「○○という事情により」「to fix #123」「refactored to avoid …」。コミットメッセージに書くべき内容が本文にある。
 - **付記型**：「注:」「追記:」「補足:」「NOTE:」「UPDATE:」「EDIT:」、日付入りの但し書き、コメントアウトされた旧コード、`// old:` `// changed from`。
+- **互換の二重経路**：新旧両方の形式を受け付ける分岐、呼び出し元がもう無い関数、渡されなくなった引数やフラグ、`# legacy` 付きの経路。旧版と新版がコードの中で同時に生きている。
+- **旧概念を指す名前**：もう存在しない概念の名前を持つ変数・関数・ファイル、`fooV2` `newFoo` `legacyBar` のように変更に対する相対位置で付いた名前、`test_after_refactor` のように変更に由来するテスト名。
 - **構造の堆積**：編集のたびに「また、」「なお、」で末尾に段落が足され、同じ主題が二箇所に分かれている。見出しや並び順が旧構成のまま。
 - **会話の漏出**：「ご指摘の通り」「上記の議論を踏まえ」「ユーザーの要望により」「as discussed」。成果物の外の文脈への参照。
 
@@ -51,14 +53,17 @@ Edit ツールの old_string / new_string 方式もこれを助長します。
 ## 手順
 
 1. **書き直す単位を決める。**
-   文ではなく、段落・コメントブロック・docstring・節のうち、変更が及ぶ最小の自己完結した単位を選びます。
+   文ではなく、段落・コメントブロック・docstring・節・関数・クラスのうち、変更が及ぶ最小の自己完結した単位を選びます。
+   分割や名前そのものが追加された順を反映しているなら、単位はファイル全体です。
    文単位の置換が「B ではなく C」を生むので、Edit ツールを使うときも old_string にはその単位全体を取ります。
 2. **変更後にその単位が主張すべき事実を箇条書きにする。**
    残る事実、加わる事実、消える事実を分けて挙げます。旧文の言い回しはここで捨てます。
 3. **箇条書きだけからその単位を書く。**
    旧文を書き換えるのではなく、初めて書くつもりで書きます。読者は旧版を知らない前提です。
+   単位がファイル全体なら、旧版を視界に置いたまま書き直しても構造が引きずられるので、旧版を作業ツリーから消し、箇条書きとテストと公開シグネチャだけを新しいコンテキストの Agent に渡して書かせます。その Agent は git の履歴も見ません。
 4. **旧文と突き合わせ、意図せず落ちた事実がないかだけ確認する。**
    旧文を見るのはこの欠落検出のためだけで、表現を復元するためではありません。
+   ファイル全体を Agent に書かせたときは、旧版を `git show HEAD:<path>` で取り出して照合し、落ちた振る舞いは箇条書きに加えて書き直させるか、不要とユーザーに確認して落とします。
 5. **残滓検査をする。**
    一発書き判定を通し、上の「残滓の形」を機械的に見ます。
    節や文書全体に手を入れたときは、見出しが内容に合っているか、並び順が論理順か、同じ主題が二箇所にないかも見ます。
@@ -85,6 +90,14 @@ Edit ツールの old_string / new_string 方式もこれを助長します。
 - 清書：`// Exponential backoff: fixed-interval retries stampede the upstream under load.`
 - 判断：「固定間隔だと上流に殺到する」は今も成立する制約なので残す。「以前は 1 秒固定だった」「変更した」「#482」は履歴なのでコミットメッセージへ。
 
+**コードの互換経路**
+
+設定の読み込みを YAML から JSON に切り替えた後の `load_config`。
+
+- 残滓：`if path.endswith(".yaml"):  # legacy` の分岐が残り、新しい経路が `load_config_v2` と名付けられている。
+- 清書：JSON だけを読む `load_config` 一つ。YAML の分岐、`_v2` の接尾辞、`legacy` のコメントは消す。
+- 判断：YAML を読む必要が今も真なら、それは残滓ではなく事実なので、分岐は残して `legacy` の語だけ消す。
+
 **堆積した節**
 
 三回の編集を経た節が「X である。また、Y でもある。なお、Z については以前の記述を改め、W とする。」になっている。
@@ -104,5 +117,6 @@ CHANGELOG、リリースノート、ADR、移行ガイド、「History」節、A
 
 ## 適用範囲と他スキルとの関係
 
-対象は文章とコメントです。コード本体の変更には口を出しませんが、コード変更に伴うコメント・docstring・README の更新には適用します。
+対象は文章、コメント、コードです。
+コードでは残滓（互換の二重経路、旧概念を指す名前、コメントアウトされた旧コード、経緯を述べるコメント）だけを見て、振る舞いの正しさは見ません。
 日本語の文章そのものの質（整形・論証・冗長）は technical-writing-ja の規範に従います。このスキルはそれに「旧版と会話を知らない」という制約を重ねるものです。
