@@ -14,10 +14,10 @@ gh skill install rinse/skills concurrent-dev
 
 ```sh
 claude plugin marketplace add rinse/skills
-claude plugin install clean-rewrite@rinse --scope project
+claude plugin install traceless-edits@rinse --scope project
 ```
 
-プラグインのスキルは `<plugin>:<skill>` の名前空間に入ります（例: `/clean-rewrite:clean-rewrite`）。
+プラグインのスキルは `<plugin>:<skill>` の名前空間に入ります（例: `/traceless-edits:traceless-edits`）。
 `gh skill install` はプラグイン内のスキルも見つけますが、Claude Code が読まない二段のパス（`.claude/skills/<plugin>/<skill>/`）に置くので、プラグインは `claude plugin install` で入れてください。
 
 ## スキル管理のベストプラクティス
@@ -113,11 +113,11 @@ Kent Beck の "Canon TDD" の定義に基づいてテスト駆動開発を進め
 日本語の技術文書を書く・直すときの文章規範を提供するスキル。
 整形・段落と論証の構成・論証の厳密さ・読み手の負荷管理・演出の抑制・LLM っぽい表現の禁止・冗長の排除といった規範を、出典の gist に基づいてまとめている。
 
-### clean-rewrite
+### traceless-edits
 
 既存のドキュメント・コメント・docstring・コードを、編集痕を残さずに書き直すスキル。
 核は「成果物は自分の過去の版と、自分を生んだ会話を知らない」── 変更を旧文への差分として当てるのではなく、書き直す単位（段落・コメントブロック・節・関数）について変更後に成り立つ事実を先に揃え、旧文の言い回しを捨ててその事実だけから書く。「B ではなく C」「以前は…だったが」「注:」「// changed from」、新旧両対応の分岐、`fooV2` や `legacyBar` のような名前といった残滓を一発書き判定（初見の読者が編集の跡に気づけないか）で検査し、変更点と理由は返信・コミットメッセージ・PR 本文へ流す。コードでは残滓だけを見て、振る舞いの正しさは見ない。分割や名前そのものが追加された順を反映しているファイルは、単位をファイル全体に上げ、旧版を見せない別のコンテキストに事実とテストだけから書かせ、旧版と照合して落ちた振る舞いを拾う。CHANGELOG・ADR・移行ガイドのように履歴が内容そのものである文書には適用しない。
-`plugins/clean-rewrite/` のプラグインとして配布し、Stop フックを同梱する。フックは、ファイルを編集したターンの終わりに一度だけ停止を保留し、そのターンで編集したファイルを clean-rewrite で点検させる。
+`plugins/traceless-edits/` のプラグインとして配布し、Stop フックを同梱する。フックは、ファイルを編集したターンの終わりに一度だけ停止を保留し、そのターンで編集したファイルを traceless-edits で点検させる。
 
 ### playwright-cli-auth
 

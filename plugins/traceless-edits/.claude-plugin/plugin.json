@@ -1,5 +1,5 @@
 {
-  "name": "clean-rewrite",
+  "name": "traceless-edits",
   "version": "0.2.0",
   "description": "Rewrites edited prose and code without edit residue, and a Stop hook that runs the check on every file edited in a turn.",
   "author": { "name": "rinse", "email": "rinse418@gmail.com" },

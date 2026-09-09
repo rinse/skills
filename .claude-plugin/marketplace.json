@@ -7,9 +7,9 @@
   "description": "rinse's agent skills and plugins.",
   "plugins": [
     {
-      "name": "clean-rewrite",
-      "source": "./plugins/clean-rewrite",
-      "description": "clean-rewrite skill plus a Stop hook that runs it on the files edited in each turn.",
+      "name": "traceless-edits",
+      "source": "./plugins/traceless-edits",
+      "description": "traceless-edits skill plus a Stop hook that runs it on the files edited in each turn.",
       "version": "0.2.0"
     }
   ]

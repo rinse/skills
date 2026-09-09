@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Stop hook: after a turn that edited files, block once and ask for a clean-rewrite pass."""
+"""Stop hook: after a turn that edited files, block once and ask for a traceless-edits pass."""
 import json, os, subprocess, sys, time
 
 inp = json.load(sys.stdin)
 cwd = inp.get("cwd") or os.getcwd()
-state_dir = os.path.join(os.path.expanduser("~"), ".claude", "clean-rewrite-hook")
+state_dir = os.path.join(os.path.expanduser("~"), ".claude", "traceless-edits-hook")
 os.makedirs(state_dir, exist_ok=True)
 state = os.path.join(state_dir, inp["session_id"])
 
@@ -48,5 +48,5 @@ if not files:
     sys.exit(0)
 print(json.dumps({"decision": "block", "reason":
     "このターンで編集したファイルに編集痕（文章の残滓、コードの互換経路や旧概念を指す名前）が残っていないか、"
-    "clean-rewrite スキルを呼び出して点検し、必要なら書き直してください。対象: " + ", ".join(sorted(files))
+    "traceless-edits スキルを呼び出して点検し、必要なら書き直してください。対象: " + ", ".join(sorted(files))
     + "。振る舞いは変えないこと。"}, ensure_ascii=False))

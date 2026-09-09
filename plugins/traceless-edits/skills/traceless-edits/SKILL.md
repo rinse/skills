@@ -1,5 +1,5 @@
 ---
-name: clean-rewrite
+name: traceless-edits
 description: Use whenever editing existing prose (docs, README, comments, docstrings) or code. Triggers on "修正して", "書き換えて", "更新して", "反映して", "fix the docs", "update the comment", "編集痕を消して", "経緯を消して", "一発で書いたようにして". Rewrites the affected unit from its updated facts so it reads as written once: no "not X but Y", no compat dual paths, no names for concepts that no longer exist, no history in comments (those go to the reply and commit message). Not for CHANGELOG/ADR/migration guides.
 license: MIT
 metadata:
@@ -7,7 +7,7 @@ metadata:
   source: https://github.com/rinse/skills
 ---
 
-# Clean rewrite（編集痕を残さない書き直し）
+# Traceless edits（編集痕を残さない書き直し）
 
 既存のドキュメント・コメント・docstring・コードを変更するとき、変更を「旧文への差分」ではなく「事実集合の更新と、その単位の再描画」として行うスキルです。
 
