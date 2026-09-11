@@ -12,7 +12,6 @@ timestamp: 2026-06-18T00:00:00Z
 
 - **`description`（frontmatter）は英語で書く。** トリガー判定に使われる第 1 階層であり、日本語・英語の両方のトリガー語句を列挙する（例: `Triggers on phrases like "PR を作って", "create a PR", ...`）。
 - **本文は日本語で書く。** 手順・判断基準・注意点を日本語で記述する。
-- 例外: `quiver-diagram` は本文も英語。対象ドメイン（圏論の作図、KaTeX/LaTeX ラベル）が英語前提のため。一貫性より読み手の自然さを優先した判断と読める。
 
 # 命名
 
@@ -30,7 +29,7 @@ timestamp: 2026-06-18T00:00:00Z
 # ファイル構成
 
 - 単純なスキルは `SKILL.md` 1 枚（`git-commit`, `tdd`, `external-action-safety` 系の gh スキル）。
-- 大きなスキルは補助ファイルに分割し、SKILL.md から参照する。`quiver-diagram` が典型で、`scripts/`（Python エンコーダ・テンプレート）と `references/`（`format-spec.md`, `style-reference.md`）を持つ。これは Agent Skills の Level 3（段階的開示）の実例であり、詳しくは [段階的開示](/agent-skills/skill-format-and-loading.md) と [ベストプラクティス](/agent-skills/authoring-best-practices.md) を参照。
+- 大きなスキルは補助ファイルに分割し、SKILL.md から参照する。`okf-knowledge` が典型で、書式仕様を `references/okf-spec.md` に分け、SKILL.md 本文は判断に集中させている。これは Agent Skills の Level 3（段階的開示）にあたり、詳しくは [段階的開示](/agent-skills/skill-format-and-loading.md) と [ベストプラクティス](/agent-skills/authoring-best-practices.md) を参照。
 - スキル間の参照はプレーンなスキル名の言及で行う。相対リンク（`../git-commit/SKILL.md` 等）はスキルが単体でインストールされると壊れるため使わない。スキルは互いに合成される単位として書かれている（[スキル設計の思想](/this-repo/skill-design-philosophy.md) 参照）。
 
 # Gotcha

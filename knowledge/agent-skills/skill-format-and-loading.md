@@ -42,7 +42,7 @@ Skill の内容は 3 種類あり、それぞれ**異なるタイミングでロ
 
 ## 本リポジトリでの実例
 
-`quiver-diagram` がこの 3 層を体現している。SKILL.md（Level 2）から、`scripts/`（Python エンコーダ・`templates.py`）と `references/format-spec.md` / `references/style-reference.md`（Level 3）を必要時にだけ参照させる。SKILL.md 本文には「単純な図はインラインで、複雑な図はスクリプトを使え」という分岐を置き、深掘りが要る局面でのみ references を読ませる。詳細は [スキル執筆の規約](/this-repo/skill-authoring-conventions.md) と [ベストプラクティス](/agent-skills/authoring-best-practices.md)。
+`okf-knowledge` がこの 3 層を体現している。SKILL.md（Level 2）は「何をどの粒度で concept にするか」の判断に集中させ、OKF の書式仕様は `references/okf-spec.md`（Level 3）に分けて、書式が必要になった局面でのみ読ませる。`inspect-web-traffic` も同様に、エスカレーション時の手順を `references/escalation.md` に分けている。詳細は [スキル執筆の規約](/this-repo/skill-authoring-conventions.md) と [ベストプラクティス](/agent-skills/authoring-best-practices.md)。
 
 # Citations
 

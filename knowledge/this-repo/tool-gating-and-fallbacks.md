@@ -26,7 +26,7 @@ timestamp: 2026-06-23T00:00:00Z
 - 「`gh` が無い」＝ 依存ツールが未導入 → 導入を提案する。
 - 「GitHub リポジトリでない」＝ そもそもこのスキルの**適用範囲外**（別ホストのリモート、リモート未設定、ローカル変更のみ等）→ 何もせず対象外と伝えて終了する。
 
-`gh-merge` / `gh-review` ではさらに「GitHub リポジトリだが現在ブランチに PR が無い」場合も区別し、黙って止まらず**どの PR か尋ねる**。状況の取り違えで誤動作しないよう、状態を細かく場合分けするのが法則。
+`gh-review` ではさらに「GitHub リポジトリだが現在ブランチに PR が無い」場合も区別し、黙って止まらず**どの PR か尋ねる**。状況の取り違えで誤動作しないよう、状態を細かく場合分けするのが法則。
 
 # GitHub MCP へのフォールバック
 
@@ -48,4 +48,4 @@ timestamp: 2026-06-23T00:00:00Z
 
 # Citations
 
-[1] `skills/gh-pr-create/SKILL.md`, `skills/create-issue/SKILL.md`, `skills/gh-review/SKILL.md`, `skills/gh-merge/SKILL.md`, `skills/gh-release/SKILL.md`, `skills/gh-init/SKILL.md`, `skills/git-init/SKILL.md` の本文。
+[1] `skills/gh-pr-create/SKILL.md`, `skills/create-issue/SKILL.md`, `skills/gh-review/SKILL.md`, `skills/gh-release/SKILL.md`, `skills/gh-init/SKILL.md`, `skills/git-init/SKILL.md` の本文。

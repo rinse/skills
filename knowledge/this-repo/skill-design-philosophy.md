@@ -13,7 +13,7 @@ timestamp: 2026-06-18T00:00:00Z
 多くのスキルが冒頭で **「このスキルの核」** を一文で宣言する。核とは、**機械的なコマンドでは埋められない判断**の所在を指す。
 
 - `gh-release`: 「バージョンの決定とノートの生成という、機械的なコマンドでは埋められない判断がこのスキルの核」
-- `gh-pr-create` / `gh-merge`: 差分全体を読んでタイトル・本文（squash メッセージ）を**合成**することが核。
+- `gh-pr-create`: 差分全体を読んでタイトル・本文を**合成**することが核。
 - `concurrent-dev`: 開発を Subagent に委譲しつつ、一貫性を守るレビュー・マージを自分が担うことが核。
 - `okf-knowledge`: 「何を・どの粒度で concept にするか」の判断が核。
 
@@ -24,7 +24,6 @@ timestamp: 2026-06-18T00:00:00Z
 入力をそのまま流用せず、**全体を読んで出力を組み立て直す**のが一貫した態度。
 
 - `gh-pr-create` は `gh pr create --fill` を使わない。中間コミットの雑なメッセージを流用せず、差分全体からタイトル・本文を合成する。
-- `gh-merge` の squash は `--subject` を自分で組み、`--body ""` で過程のコミットメッセージ（"WIP", "fix typo"）を混入させない。
 - `gh-release` のノートも最終的な変更だけを反映し、過程は捨てる。
 - コミットメッセージは単一行 + conventional-commit 風 prefix で統一（[git 規律](/this-repo/external-action-safety.md) 参照）。
 
@@ -50,5 +49,5 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Citations
 
-[1] `skills/gh-release/SKILL.md`, `skills/gh-pr-create/SKILL.md`, `skills/gh-merge/SKILL.md`, `skills/concurrent-dev/SKILL.md`, `skills/okf-knowledge/SKILL.md`, `skills/git-init/SKILL.md` の本文。
+[1] `skills/gh-release/SKILL.md`, `skills/gh-pr-create/SKILL.md`, `skills/concurrent-dev/SKILL.md`, `skills/okf-knowledge/SKILL.md`, `skills/git-init/SKILL.md` の本文。
 [2] 公式の設計原則: [スキル執筆のベストプラクティス](/agent-skills/authoring-best-practices.md)

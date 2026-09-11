@@ -17,7 +17,7 @@ representative なタスクで Agent を走らせ、**詰まる／文脈が足�
 
 SKILL.md が肥大化したら、**内容を別ファイルに分けて参照させる**。互いに排他的・併用されにくい文脈はパスを分けて持つと、不要なトークンを読まずに済む。これは段階的開示の Level 3 を活かす書き方（[フォーマットと段階的開示](/agent-skills/skill-format-and-loading.md)）。
 
-本リポジトリでは `quiver-diagram` が `scripts/` と `references/` に分割している好例。逆に単純なスキルは SKILL.md 1 枚に保たれている。
+本リポジトリでは `okf-knowledge` が書式仕様を `references/okf-spec.md` に分けている好例。逆に単純なスキルは SKILL.md 1 枚に保たれている。
 
 # code と reference を区別する
 
