@@ -103,6 +103,11 @@ git リポジトリを初期化するスキル。
 Kent Beck の "Canon TDD" の定義に基づいてテスト駆動開発を進めるスキル。
 テストリスト → Red → Green → Optionally Refactor のサイクルを1テストずつ回し、インターフェイス設計と実装設計を分けて「動かす」と「きれいにする」を同時にやらない規律を提供する。各ステップで陥りがちな間違いも示す。
 
+### cleanup-tests
+
+コードベース内のテストを精査し、削除・統合できるものをリストアップするスキル。
+実装のコピー、モックの自己検証、型・ライブラリ保証の再確認、他テストとの重複、内部実装への過剰な依存、過剰なケース分けを対象に、「削除するとどんな現実的な不具合を見逃すか」を基準に判断する。テスト件数やカバレッジの維持自体は目的にしない。
+
 ### okf-knowledge
 
 作業で得た知見を [Open Knowledge Format (OKF)](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) の knowledge bundle として残すスキル。
