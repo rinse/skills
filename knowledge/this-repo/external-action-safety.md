@@ -10,7 +10,7 @@ timestamp: 2026-06-23T00:00:00Z
 
 # 実行前に必ず確認を取る
 
-外向きで取り消しづらい操作（関係者に通知される・公開される）は、**実行前にユーザーへ内容を提示して了承を取る**。`gh-pr-create` / `gh-issue-create` / `gh-review` / `gh-merge` / `gh-release` すべてに「ユーザーに内容を見せて確認を取る」ステップがある。修正指示があれば反映して再提示する。
+外向きで取り消しづらい操作（関係者に通知される・公開される）は、**実行前にユーザーへ内容を提示して了承を取る**。`gh-pr-create` / `create-issue` / `gh-review` / `gh-merge` / `gh-release` すべてに「ユーザーに内容を見せて確認を取る」ステップがある。修正指示があれば反映して再提示する。
 
 # push はまず試し、失敗したら委譲する
 
@@ -27,7 +27,7 @@ push と、push を誘発する操作は、**まず一度試す**（`git push or
 - `gh-review`: `event` は `COMMENT` を既定にし、`[対応必須]` があっても勝手に `REQUEST_CHANGES` に上げない。「PR をブロックするかはユーザーの判断」。
 - `gh-merge`: ブランチ削除（`--delete-branch`）は希望時のみ。
 - `gh-pr-create`: `--draft` は明示時のみ。
-- `gh-pr-create` / `gh-issue-create`: 担当者・マイルストーンは希望時のみ。ラベルは内容（差分／課題）に合うものを既存ラベルから**自動選定**するが、付けすぎず、**存在しないラベルは勝手に作らずユーザーに確認**する（AI 作成を示すラベルのような運用ラベルも、適合すればこの選定で付く）。
+- `gh-pr-create` / `create-issue`: 担当者・マイルストーンは希望時のみ。ラベルは内容（差分／課題）に合うものを既存ラベルから**自動選定**するが、付けすぎず、**存在しないラベルは勝手に作らずユーザーに確認**する（AI 作成を示すラベルのような運用ラベルも、適合すればこの選定で付く）。
 - `gh-review` の severity タグも乱発しない（`[対応必須]` の多用は著者の負担）。
 
 # git の規律
@@ -40,4 +40,4 @@ push と、push を誘発する操作は、**まず一度試す**（`git push or
 
 # Citations
 
-[1] `skills/gh-pr-create/SKILL.md`, `skills/gh-issue-create/SKILL.md`, `skills/gh-review/SKILL.md`, `skills/gh-merge/SKILL.md`, `skills/gh-release/SKILL.md`, `skills/gh-init/SKILL.md`, `skills/git-commit/SKILL.md` の本文。
+[1] `skills/gh-pr-create/SKILL.md`, `skills/create-issue/SKILL.md`, `skills/gh-review/SKILL.md`, `skills/gh-merge/SKILL.md`, `skills/gh-release/SKILL.md`, `skills/gh-init/SKILL.md`, `skills/git-commit/SKILL.md` の本文。

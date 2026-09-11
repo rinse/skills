@@ -53,10 +53,10 @@ claude plugin install traceless-edits@rinse --scope project
 既存の GitHub Pull Request の title・description・labels を最新の差分に合わせて更新するスキル。
 レビュー指摘の反映・追加の指示・その他 PR の修正でコードを変えたときに、古い本文へ追記するのではなく現在の差分全体から再合成して、説明が実体とずれないようにする。更新前に変更内容を確認する。GitHub の PR 専用。
 
-### gh-issue-create
+### create-issue
 
-雑な記述から GitHub の Issue を起票するスキル。
-やりたいことを構造化された本文に合成し、リポジトリに ISSUE_TEMPLATE があればそれに従い、なければ概要・目的・制約・受け入れ条件のテンプレートを使う。作成前に内容を確認する。GitHub 専用。
+雑な記述から Issue を起票するスキル。
+やりたいことを構造化された本文に合成し、リポジトリに ISSUE_TEMPLATE があればそれに従い、なければ概要・目的・制約・受け入れ条件のテンプレートを使う。GitHub なら `gh` で作成し、リモートが無い場合はマークダウンファイルとして書き出す。作成前に内容を確認する。
 
 ### gh-review
 

@@ -36,16 +36,16 @@ timestamp: 2026-06-23T00:00:00Z
 
 コメントや本文など複雑な文字列をコマンドラインに直書きするとシェルのエスケープで壊れる。**ファイルに書き出して渡し、後で片付ける**のが共通手法。
 
-- `gh-issue-create` / `gh-pr-create`: `--body-file`
+- `create-issue` / `gh-pr-create`: `--body-file`
 - `gh-review`: JSON を作って `--input`
 - `gh-release`: `--notes-file`
 
-一時ファイルの置き場所は**リポジトリの作業ツリーを汚さない**ことを優先する。`gh-issue-create` / `gh-pr-create` は「セッションで自由に読み書きできる一時ファイル（スクラッチ領域）があればそれを使い、無ければ標準の一時ファイル（`/tmp`）を使う」と明記している。作業ツリー直下（例: `pr-body.md`）に置くと、未追跡ファイルが残り、環境によっては後片付けの `rm` が許可で弾かれて消し残る。どこに作ったとしても後処理で片付ける。
+一時ファイルの置き場所は**リポジトリの作業ツリーを汚さない**ことを優先する。`create-issue` / `gh-pr-create` は「セッションで自由に読み書きできる一時ファイル（スクラッチ領域）があればそれを使い、無ければ標準の一時ファイル（`/tmp`）を使う」と明記している。作業ツリー直下（例: `pr-body.md`）に置くと、未追跡ファイルが残り、環境によっては後片付けの `rm` が許可で弾かれて消し残る。どこに作ったとしても後処理で片付ける。
 
 # テンプレートは検出 → フォールバック
 
-`gh-pr-create` / `gh-issue-create` はリポジトリの PR/Issue テンプレートを所定パスで探し、あればそれを埋め、なければ自前のフォールバックテンプレートを使う。プレースホルダ（空欄・`<!-- -->`）は残さず実内容に置換する。
+`gh-pr-create` / `create-issue` はリポジトリの PR/Issue テンプレートを所定パスで探し、あればそれを埋め、なければ自前のフォールバックテンプレートを使う。プレースホルダ（空欄・`<!-- -->`）は残さず実内容に置換する。
 
 # Citations
 
-[1] `skills/gh-pr-create/SKILL.md`, `skills/gh-issue-create/SKILL.md`, `skills/gh-review/SKILL.md`, `skills/gh-merge/SKILL.md`, `skills/gh-release/SKILL.md`, `skills/gh-init/SKILL.md`, `skills/git-init/SKILL.md` の本文。
+[1] `skills/gh-pr-create/SKILL.md`, `skills/create-issue/SKILL.md`, `skills/gh-review/SKILL.md`, `skills/gh-merge/SKILL.md`, `skills/gh-release/SKILL.md`, `skills/gh-init/SKILL.md`, `skills/git-init/SKILL.md` の本文。
