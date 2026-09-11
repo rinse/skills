@@ -1,5 +1,5 @@
 ---
-name: git-bisect-run
+name: git-bisect
 description: Find the commit that introduced a regression via git bisect. Triggers on "どのコミットで壊れた", "原因コミットを特定", "リグレッションの原因を探して", "bisect して", "which commit broke this", "find the commit that introduced this bug", "git bisect". Core — synthesize a predicate script and delegate iteration to `git bisect run`; never test intermediate commits by hand. Composes with bug-repro; fixing is out of scope.
 license: MIT
 metadata:
@@ -7,7 +7,7 @@ metadata:
   source: https://github.com/rinse/skills
 ---
 
-# Git Bisect Run (回帰コミットの特定)
+# Git Bisect (回帰コミットの特定)
 
 回帰バグ（以前は動いていたのに、あるコミットから壊れた）の**原因コミットを `git bisect` で特定する**スキルです。成果物は「どのコミットが症状を持ち込んだか」の特定と、その根拠。**修正はこのスキルの範囲外**です（修正に進むなら再現テストを使って [tdd](../tdd/SKILL.md) の Red へ）。
 
