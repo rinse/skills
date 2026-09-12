@@ -7,10 +7,10 @@
   "description": "rinse's agent skills and plugins.",
   "plugins": [
     {
-      "name": "traceless-edits",
-      "source": "./plugins/traceless-edits",
-      "description": "traceless-edits skill plus a Stop hook that runs it on the files edited in each turn.",
-      "version": "0.2.0"
+      "name": "traceless",
+      "source": "./plugins/traceless",
+      "description": "cleanup-* skills (speculation, tests, comments, docs) plus a Stop hook that runs each of them in its own headless session on the files edited in each turn.",
+      "version": "0.3.0"
     }
   ]
 }
