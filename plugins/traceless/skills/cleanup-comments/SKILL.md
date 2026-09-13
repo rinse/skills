@@ -1,6 +1,6 @@
 ---
 name: cleanup-comments
-description: Use this skill whenever the user asks to cleanup, reduce, or review code comments. Triggers on phrases like "コメントを整理して", "余計なコメントを消して", "コメントを減らして", "cleanup comments", "remove unnecessary comments".
+description: List code comments that narrate edits or restate code, keeping only those that constrain future editors. Use when asked to clean up or reduce comments (コメントを整理して, cleanup comments).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

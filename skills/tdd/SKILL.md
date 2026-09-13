@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Use this skill whenever development should follow Test-Driven Development (Kent Beck's Canon TDD) — writing the test before the code. Triggers on phrases like "TDDで", "TDDで開発して", "テスト駆動開発", "テストファーストで", "テストから書いて", "レッドグリーンリファクタ", "develop with TDD", "test-driven", "test-first", "red-green-refactor", or any request to let tests drive an implementation.
+description: Develop with Kent Beck's Canon TDD. Test list, red, green, optional refactor, one test at a time. Use when asked to work test-first or with TDD (TDDで, テストファーストで, red-green-refactor).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -109,16 +109,6 @@ TDD はこの2つを別々のタイミングで考えさせます。テストを
 **Refactor(整える)で:**
 - テストが緑になる**前に**リファクタリングを始める → 安全網がない状態で構造をいじることになる。
 - 必要以上のリファクタリング・早すぎる抽象化 → 今のテストが求めていない複雑さを持ち込む。
-
-## 進め方のまとめ
-
-1. **テストリスト**を作る（振る舞いを列挙、実装は混ぜない)。
-2. リストから**1つ**選び、**失敗する**テストを書く (Red)。失敗を必ず目で確認する。
-3. 最短で**緑**にする (Green)。きれいさは問わない。
-4. 必要なら緑のまま**整える** (Optionally Refactor)。整えるものがなければ飛ばしてよい。重複はヒント、やりすぎない。
-5. 片付いた項目を消し、気づいた項目を足し、リストが空になるまで 2 へ戻る。
-
-小さく刻み、各ステップでフィードバックを得て、「動かす」と「きれいにする」を分けて、確信を積み上げながら進むこと。これが TDD です。
 
 ## 出典
 

@@ -1,6 +1,6 @@
 ---
 name: cleanup-speculation
-description: Use this skill whenever the user asks to remove speculative or defensive code, unused abstractions, unused options, or leftover compatibility paths. Triggers on phrases like "過剰な抽象化を削って", "防御的なコードを整理して", "使われていないオプションを消して", "互換コードを消して", "remove speculative code", "remove unused abstractions", "remove legacy paths".
+description: List speculative code to remove. Unreachable guards, single-caller abstractions, unused options, legacy paths. Use when asked to remove speculative, defensive, or dead code (過剰な抽象化を削って, remove speculative code).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

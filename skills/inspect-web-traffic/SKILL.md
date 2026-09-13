@@ -1,6 +1,6 @@
 ---
 name: inspect-web-traffic
-description: Capture the network traffic behind a browser action and build a one-shot script that reproduces it. Use this skill to inspect or reproduce a web request or API call, triggered by phrases such as "ブラウザの通信を解析して", "ブラウザ操作を curl で再現して", "ブラウザ操作をスクリプト化して", or anything like that.
+description: Capture the network traffic behind a browser action and synthesize a one-shot script (curl by default) that reproduces it. Use when asked to analyze browser traffic or turn a browser action into requests (ブラウザの通信を解析して, curl で再現して).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

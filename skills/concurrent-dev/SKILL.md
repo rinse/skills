@@ -1,6 +1,6 @@
 ---
 name: concurrent-dev
-description: Use this skill whenever the user asks to develop multiple tasks in parallel or to dispatch development work to subagents. Triggers on phrases like "並列で開発", "subagent にやらせて", "タスク分解して実装", "develop these in parallel", "split across subagents", "Break a task into smaller tasks and delegate them to subagents".
+description: Develop several tasks in parallel. Decompose, dispatch implementation to subagents in .wt/ worktrees, review, and merge. Use when asked to develop tasks in parallel or delegate implementation to subagents (並列で開発, subagent にやらせて).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

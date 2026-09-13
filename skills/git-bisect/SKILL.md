@@ -1,6 +1,6 @@
 ---
 name: git-bisect
-description: Find the commit that introduced a regression via git bisect. Triggers on "どのコミットで壊れた", "原因コミットを特定", "リグレッションの原因を探して", "bisect して", "which commit broke this", "find the commit that introduced this bug", "git bisect". Core — synthesize a predicate script and delegate iteration to `git bisect run`; never test intermediate commits by hand. Composes with bug-repro; fixing is out of scope.
+description: Find the commit that introduced a regression with git bisect run, driven by a synthesized predicate script. Use when asked which commit broke something (どのコミットで壊れた, bisect して, which commit broke this). Does not fix.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -9,7 +9,7 @@ metadata:
 
 # Git Bisect (回帰コミットの特定)
 
-回帰バグ（以前は動いていたのに、あるコミットから壊れた）の**原因コミットを `git bisect` で特定する**スキルです。成果物は「どのコミットが症状を持ち込んだか」の特定と、その根拠。**修正はこのスキルの範囲外**です（修正に進むなら再現テストを使って [tdd](../tdd/SKILL.md) の Red へ）。
+回帰バグ（以前は動いていたのに、あるコミットから壊れた）の**原因コミットを `git bisect` で特定する**スキルです。成果物は「どのコミットが症状を持ち込んだか」の特定と、その根拠。**修正はこのスキルの範囲外**です（修正に進むなら再現テストを使って tdd の Red へ）。
 
 ## このスキルの核: 述語スクリプトの合成と、手動反復の禁止
 
@@ -26,9 +26,9 @@ metadata:
 
 ## bug-repro との合成
 
-述語の中身は「バグが再現するか」の判定であり、これは [bug-repro](../bug-repro/SKILL.md) の成果物そのものです。したがって:
+述語の中身は「バグが再現するか」の判定であり、これは bug-repro の成果物そのものです。したがって:
 
-- **再現テスト／再現スクリプトがまだ無ければ、先に [bug-repro](../bug-repro/SKILL.md) を実行して作る。** いきなり述語を書こうとしない。再現できるものが無ければ bisect は始められない。
+- **再現テスト／再現スクリプトがまだ無ければ、先に bug-repro を実行して作る。** いきなり述語を書こうとしない。再現できるものが無ければ bisect は始められない。
 - bug-repro の「下流との受け渡し規約」──**単一コマンドで実行でき、終了コード 0 / 非 0 で合否を判定できる**成果物──を受け取り、それを bisect の述語スクリプトで包む。bug-repro はまさにこの契約（`git bisect run` に述語として渡せること）を意識して成果物を整えている。
 - **既にユーザーが再現コマンドを持っているなら、それをそのまま使う。** 改めて bug-repro を回す必要はない。ただしその 1 コマンドが「単一コマンド・終了コードで合否」を満たすことは確認する。
 
@@ -142,7 +142,7 @@ bisect は**判定の決定性**を前提とします。同じコミットを 2 
 
 ## 5. 実行
 
-bisect は checkout を繰り返すので、**メインの checkout を占有せず、dirty state と混ざらない専用の worktree** で回します。[concurrent-dev](../concurrent-dev/SKILL.md) の規約に合わせ、プロジェクトルート直下の `.wt/` に作ります（`.wt/` はリポジトリを汚さないよう `.gitignore` ではなく `.git/info/exclude` に入れる）:
+bisect は checkout を繰り返すので、**メインの checkout を占有せず、dirty state と混ざらない専用の worktree** で回します。concurrent-dev の規約に合わせ、プロジェクトルート直下の `.wt/` に作ります（`.wt/` はリポジトリを汚さないよう `.gitignore` ではなく `.git/info/exclude` に入れる）:
 
 ```sh
 git check-ignore -q .wt || echo '.wt/' >> .git/info/exclude
@@ -177,7 +177,7 @@ bisect が名指ししたコミットを**鵜呑みにしません**。フレー
 - **bisect log**（辿った経路）。
 - 検証の弱点があればそれも（skip の多発・フレーキーさ・範囲の性質）。
 
-**修正はこのスキルの範囲外**です。修正に進むなら、確保した再現テストを [tdd](../tdd/SKILL.md) の Red 入口として引き渡します。
+**修正はこのスキルの範囲外**です。修正に進むなら、確保した再現テストを tdd の Red 入口として引き渡します。
 
 ## 7. 後片付け
 
@@ -190,4 +190,4 @@ bisect が名指ししたコミットを**鵜呑みにしません**。フレー
 - **各ステップを手で試さない。** `git bisect good/bad` を手動で繰り返さない。反復は `git bisect run` に委ねる（このスキルの核）。校正（4.）の 2 回だけが例外。
 - **good を勝手に大量試行しない。** 不明なら候補を挙げてユーザーに確認する。
 - **結論を鵜呑みにしない。** 差分で症状を説明できるか確かめ、できなければ正直に報告する。
-- **修正しない。** 原因の特定まで。修正は再現テストを持って [tdd](../tdd/SKILL.md) へ。
+- **修正しない。** 原因の特定まで。修正は再現テストを持って tdd へ。

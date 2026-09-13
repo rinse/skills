@@ -1,6 +1,6 @@
 ---
 name: okf-knowledge
-description: Use this skill whenever the user wants to capture or consolidate knowledge gained during work into a persistent, reusable form. Triggers on phrases like "知見を貯めて", "知見をまとめて", "ナレッジ化して", "capture this knowledge". Writes an Open Knowledge Format (OKF) bundle of markdown concept files under the project's knowledge/ directory.
+description: Capture knowledge gained during work as an Open Knowledge Format (OKF) bundle under knowledge/. Use when asked to record or consolidate insights (知見を貯めて, 知見をまとめて, ナレッジ化して).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

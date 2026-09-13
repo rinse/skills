@@ -1,6 +1,6 @@
 ---
 name: spike
-description: Use when an implementation task's feasibility is uncertain and only running code can settle it. Triggers on "実現可能か調べて", "スパイクして", "プロトタイプで検証", "feasibility", "spike this", "PoC", or mid-implementation when viability is unpredictable. Probes the smallest uncertain part with throwaway code in .spike/ and harvests conclusion, evidence, and why-nots into docs/spikes/.
+description: Settle an uncertain implementation question with a throwaway prototype in .spike/ and write the findings to docs/spikes/. Use when feasibility can only be settled by running code (実現可能か調べて, スパイクして, PoC).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -124,11 +124,3 @@ metadata:
 - **明らかになった制限事項** ── 特に、ユーザーの当初の想定と食い違う点を明示します。無条件の「できます」は稀で、たいてい「できるが、この条件・この上限・この副作用つき」です。この通達がこのスキルの約束です。
 - **引き継ぎ** ── 実装に進んでよいか、設計を変えるべきか、代替案を検討すべきか。判断材料を渡し、実装そのものは引き渡す。
 
-## まとめ
-
-1. 不透明な部分を切り出す。無ければスキル不要。読めば分かるならまず読む。迷えば高性能モデルに相談する。
-2. 問いを 1 文で定式化する。1 スパイク 1 問い。
-3. `.spike/<slug>/` に使い捨てコードを書く。gitignore し、**作業ツリーの本番ファイルは改変しない**（検証が in-place を要する場合だけ `.wt/spike-<slug>` worktree に隔離し、回収後に破棄）。本物に触れ、Why not コメントだけは手を抜かない。
-4. 必ず実行して観察する。「できない」の結論は慎重に。膨らみ始めたらそれも知見。
-5. `docs/spikes/<slug>.md` に、問い・結論（＋推奨）・詳細・Why not・落とし穴を単体で完結する形で文書化する。
-6. 結論と**制限事項**を通達し、**本実装には進まず**引き継ぐ。

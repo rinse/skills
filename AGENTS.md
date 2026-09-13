@@ -2,6 +2,11 @@
 
 ## Knowledge
 
-このリポジトリには、スキル群を読み通して得た横断的な法則と、Agent Skills プラットフォームの仕様・ベストプラクティスを [Open Knowledge Format (OKF)](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) でまとめた knowledge bundle があります。新しいスキルを書く／既存スキルを直す前に参照してください。
+スキル群の横断的な法則と Agent Skills プラットフォームの仕様を [OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) の knowledge bundle にまとめてあります。入口は [knowledge/index.md](knowledge/index.md)。
 
-- [knowledge/index.md](knowledge/index.md) — knowledge bundle の入口
+- description や frontmatter を書くときは [スキル執筆の規約](knowledge/this-repo/skill-authoring-conventions.md)
+- 新しいスキルの構成を決めるときは [スキル設計の思想](knowledge/this-repo/skill-design-philosophy.md)
+- PR・Issue・タグなど外向きの操作を扱うスキルを書くときは [外向き操作の安全則](knowledge/this-repo/external-action-safety.md)
+- SKILL.md の仕様上の制限を確認するときは [Skill フォーマットと段階的開示](knowledge/agent-skills/skill-format-and-loading.md)
+
+検証は `uv run scripts/validate_skills.py`。

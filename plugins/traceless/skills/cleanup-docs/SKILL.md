@@ -1,6 +1,6 @@
 ---
 name: cleanup-docs
-description: Use this skill whenever the user asks to remove edit residue from prose (README, docs, docstrings, Markdown) so it reads as written once. Triggers on phrases like "ドキュメントの編集痕を消して", "経緯を消して", "一発で書いたようにして", "文書を整理して", "cleanup docs", "remove edit residue", "make it read as written once".
+description: List edit residue in prose (README, docs, docstrings) so it reads as written once. Use when asked to remove edit traces from documents (編集痕を消して, 一発で書いたようにして, cleanup docs).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

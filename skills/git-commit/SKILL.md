@@ -1,6 +1,6 @@
 ---
 name: git-commit
-description: Use this skill whenever performing a git commit. This includes when the user asks to commit changes, create a commit, save progress to git, or any variation of "commit this/these changes". Also triggers when using /commit or when a workflow involves creating git commits as a step.
+description: Commit with explicitly listed files and a one-line conventional-commit message. Use whenever making a git commit, including as a step inside another workflow.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

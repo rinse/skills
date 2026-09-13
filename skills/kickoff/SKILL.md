@@ -1,6 +1,6 @@
 ---
 name: kickoff
-description: Use this skill whenever bootstrapping a brand-new project from scratch — turning an empty directory into a working repo. Triggers on phrases like "プロジェクトを一から作って", "新規プロジェクトを立ち上げて", "kick off a new project", "bootstrap this repo", "set up a fresh project from scratch", or any request to initialize a brand-new codebase end-to-end (not for adding a feature to an existing project, and not plain "git init" alone — use git-init for that). Sets up the repo via git-init/gh-init, installs the project's baseline skill set via `gh skill install` (git-commit, okf-knowledge, technical-writing-ja, concurrent-dev always; other git-* by choice; all gh-* if a remote exists — never git-init/gh-init, which are init-only), skipping any step whose tool isn't available, then writes minimal README.md/AGENTS.md splitting docs into docs/ (human) and knowledge/ (agent), and commits them via git-commit.
+description: Bootstrap a brand-new project in an empty directory. Git-init, gh-init, install the baseline skills, write minimal README.md/AGENTS.md, commit. Use when asked to start a project from scratch (プロジェクトを一から作って, kick off a new project). Not for plain git init or existing projects.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -49,11 +49,11 @@ metadata:
 
 ### 3-1. スキルのインストールコマンドの有無を確認する
 
-`command -v gh` を確認したうえで、`gh skill install --help` と `gh skills install --help`（サブコマンド名が単数形・複数形のどちらの環境もあり得るため両方試す）のどちらが通るかを確認し、通った方を以降で使う。どちらも使えなければ手順 3 全体をスキップし、その旨をユーザーに伝えて手順 4 に進む。
+`gh skill install`（環境によっては `gh skills`）が使えるか確認する。使えなければ手順 3 全体をスキップし、その旨を伝えて手順 4 に進む。
 
 ### 3-2. 導入するスキルを決める
 
-まず、インストール可能なスキルの一覧を取得する。3-1 で確認したコマンド（`gh skill` / `gh skills`）に一覧サブコマンド（`list` 等）があればそれを使う。一覧取得手段が無ければ、現在のセッションで見えているスキル一覧（Skill ツールの一覧）から拾うが、これはインストール元カタログの全体を反映するとは限らない点に留意する。
+インストール可能なスキルの一覧を取得する（一覧サブコマンドが無ければ、現在のセッションで見えているスキル一覧から拾う）。
 
 取得した一覧をもとに、次の3グループで導入対象を決める。
 

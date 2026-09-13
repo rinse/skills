@@ -1,6 +1,6 @@
 ---
 name: cleanup-tests
-description: Use this skill whenever the user asks to cleanup, sort, or organize (unit) tests. Triggers on phrases like "テストを整理して", "テストを統合して", "余計なテストを消して", "organize tests", "remove unnecessary tests", "cleanup tests".
+description: List tests to delete or merge. Implementation copies, mock self-checks, duplicates, accidental behavior. Use when asked to clean up or organize tests (テストを整理して, cleanup tests).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>

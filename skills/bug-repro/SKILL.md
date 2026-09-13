@@ -1,6 +1,6 @@
 ---
 name: bug-repro
-description: Turn a vague bug report into a minimal, deterministic failing test that reproduces the reported symptom. Triggers on "バグを再現して", "再現テストを書いて", "再現手順を特定", "最小再現", "reproduce this bug", "write a failing test for this bug", "minimal reproduction", "repro". Minimize the repro; never fabricate one — report honestly when it cannot be reproduced. Fixing is out of scope (hand off to tdd).
+description: Turn a bug report into a minimal, deterministic failing test that reproduces the reported symptom. Use when asked to reproduce a bug or write a repro (バグを再現して, 最小再現, reproduce this bug). Does not fix.
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -9,9 +9,9 @@ metadata:
 
 # Bug Repro (バグの再現)
 
-雑なバグ報告（「〜するとおかしい」「たまに落ちる」）を、**報告された症状を実際に再現する、最小で決定的な失敗テスト**に変換するスキルです。[gh-issue-create](../gh-issue-create/SKILL.md) が「雑な記述 → 構造化された Issue」であるのと対で、これは「雑な報告 → 実行可能な再現」です。
+雑なバグ報告（「〜するとおかしい」「たまに落ちる」）を、**報告された症状を実際に再現する、最小で決定的な失敗テスト**に変換するスキルです。create-issue が「雑な記述 → 構造化された Issue」であるのと対で、これは「雑な報告 → 実行可能な再現」です。
 
-**修正はこのスキルの範囲外です。** 成果物は「壊れていることを示す失敗テスト」まで。修正に進むなら、それを [tdd](../tdd/SKILL.md) の Red の入口として引き渡します。
+**修正はこのスキルの範囲外です。** 成果物は「壊れていることを示す失敗テスト」まで。修正に進むなら、それを tdd の Red の入口として引き渡します。
 
 ## このスキルの核: 2 つの規律
 
@@ -119,11 +119,3 @@ metadata:
 
 いずれにせよ、勝手にコミットして CI を赤くしないこと。`git add` は対象ファイルを明示列挙します（`git add -A` は使わない）。
 
-## まとめ
-
-1. 報告から期待・実際・条件を抽出し、埋められない不足はユーザーに確認する。
-2. 仮説を立て、フレームワークの失敗テスト（無ければ再現スクリプト）を書き、走らせて観察し、反復する。
-3. **失敗の内容が症状と一致するか**を確認する。別の理由で落ちているなら再現ではない。
-4. 再現を保ったまま最小化し、決定的にする。
-5. 環境依存は固定するかコメントで明記する。
-6. 失敗テスト + 短い分析を、**単一コマンド・終了コードで合否**の形に整えて渡す。再現できなければ**正直に**、試した条件とともに報告する。修正は [tdd](../tdd/SKILL.md) の Red から。

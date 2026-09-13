@@ -1,6 +1,6 @@
 ---
 name: technical-writing-ja
-description: Japanese technical writing standards — formatting, paragraph construction, rigorous argumentation, reader-load management, restrained rhetoric, and banned LLM-ish phrasing. Use when writing or reviewing Japanese technical documents (book chapters, articles, explanatory text). Triggers on phrases like "技術文章を書いて", "文章を直して", "文書をレビューして", "日本語技術文書の規範に従って".
+description: Japanese technical writing standards. Formatting, paragraph structure, rigorous argument, reader load, and banned LLM-ish phrasing. Use when writing or revising Japanese technical prose (技術文章を書いて, 文章を直して, 文書をレビューして).
 metadata:
   source: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d
 ---

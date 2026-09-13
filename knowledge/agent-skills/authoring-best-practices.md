@@ -25,7 +25,11 @@ SKILL.md が肥大化したら、**内容を別ファイルに分けて参照さ
 
 # description の質がトリガーを決める
 
-`name` と `description` は段階的開示の第 1 階層で、**いつ使うか**の判断材料になる。description には「何をするか」と「いつ使うか」を両方書く。本リポジトリは日英のトリガー語句を列挙し、適用範囲の限定（「GitHub の PR 専用」等）まで書き込んでトリガー精度を上げている。
+`name` と `description` は段階的開示の第 1 階層で、**いつ使うか**の判断材料になる。description には「何をするか」と「いつ使うか」を両方書くが、**それ以上は書かない**。スキルが増えるとハーネスは description を切り詰めて表示するため、長い description は自分の発火条件を見えなくする。また「データベースに触るとき」のような広い条件は、無関係なタスクにまでスキルを読み込ませる。本リポジトリでは 1〜2 文 + 日英トリガー語句 2〜3 個 + 適用範囲の限定（「GitHub only」等）に収める（[スキル執筆の規約](/this-repo/skill-authoring-conventions.md)）。
+
+# 手順書より判断を書く
+
+モデルが賢くなるほど、細かい手順（itinerary / recipe）は助けにならず、かえって判断を狭める。スキルには「どこに判断があるか」「何を守るか」を書き、ツールの導入方法や失敗時のリトライのような定型はモデルに任せる。完了条件（どこまでやって止まるか）は明示する。
 
 # 実使用を観測して反復する
 
@@ -35,3 +39,4 @@ SKILL.md が肥大化したら、**内容を別ファイルに分けて参照さ
 
 [1] Equipping agents for the real world with Agent Skills（engineering blog）: https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
 [2] Agent Skills Overview / Best practices（platform docs）: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
+[3] Rethinking skills and prompts for GPT-6 Astra（OpenAI developers blog、description の長さ・段階的開示・手順書の弊害・完了条件について）: https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra

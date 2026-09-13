@@ -1,6 +1,6 @@
 ---
 name: playwright-cli-auth
-description: Have the user log in themselves in a temporarily headful browser, then continue headless with the saved session. Use whenever a task needs an authenticated web session — dashboards, account pages, anything behind a login wall. Triggers on phrases like "ログインして", "ログインが必要", "log in to the site". Never asks the user for credentials.
+description: Let the user log in themselves in a temporarily headful playwright-cli browser, then continue headless with the saved session. Use when a browser task hits a login wall. Never asks for credentials.
 allowed-tools: Bash(playwright-cli:*)
 license: MIT
 metadata:
