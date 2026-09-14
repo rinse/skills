@@ -9,8 +9,8 @@
     {
       "name": "traceless",
       "source": "./plugins/traceless",
-      "description": "cleanup-* skills (speculation, tests, comments, docs) plus a Stop hook that runs each of them in its own headless session on the files edited in each turn.",
-      "version": "0.3.1"
+      "description": "cleanup-* skills (speculation, tests, comments, docs) that audit finished code and prose for edit residue, and a cleanup skill that runs all four in order, each in a fresh subagent.",
+      "version": "0.4.0"
     }
   ]
 }

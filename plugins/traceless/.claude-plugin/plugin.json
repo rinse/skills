@@ -1,7 +1,7 @@
 {
   "name": "traceless",
-  "version": "0.3.1",
-  "description": "cleanup-* skills (speculation, tests, comments, docs) that audit finished code and prose for edit residue, and a Stop hook that runs each of them in its own headless session on every file edited in a turn.",
+  "version": "0.4.0",
+  "description": "cleanup-* skills (speculation, tests, comments, docs) that audit finished code and prose for edit residue, and a cleanup skill that runs all four in order, each in a fresh subagent.",
   "author": { "name": "rinse", "email": "rinse418@gmail.com" },
   "license": "MIT",
   "repository": "https://github.com/rinse/skills"
