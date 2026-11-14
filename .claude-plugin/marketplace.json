@@ -11,6 +11,12 @@
       "source": "./plugins/traceless",
       "description": "cleanup-* skills (speculation, tests, comments, docs) that audit finished code and prose for edit residue, and a cleanup skill that runs all four in order, each in a fresh subagent.",
       "version": "0.4.0"
+    },
+    {
+      "name": "loop-dev",
+      "source": "./plugins/loop-dev",
+      "description": "loop-dev skill that works through ready issues in a loop (pick, implement with concurrent-dev, deliver, file new issues), with the pick-issue, concurrent-dev, create-issue, git-commit, gh-pr-create, and gh-pr-update skills it builds on.",
+      "version": "0.1.0"
     }
   ]
 }

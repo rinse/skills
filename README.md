@@ -119,6 +119,16 @@ Kent Beck の "Canon TDD" の定義に基づいてテスト駆動開発を進め
 
 - **cleanup**: 指定したファイル（指定が無ければ未コミットの変更ファイル）に四つのスキルを speculation → tests → comments → docs の順に適用する。各スキルは会話と差分を持たない別の Subagent で実行し、最後にクリーンアップによる変更の確認と test / build / lint を行って報告する。`/traceless:cleanup` で明示的に起動する。
 
+### loop-dev（プラグイン）
+
+着手してよい（ready の）Issue を 1 件ずつ、選定 → 実装 → 納品 → 新しい Issue の起票 の順に処理し、ready の Issue が無くなるまで繰り返すスキル群。`plugins/loop-dev/` として配布する。Issue は GitHub Issues（`ready` ラベル）とローカルファイル（`issues/*.md` の frontmatter `status: ready`）の両方を扱う。どの Issue を ready にするかと、納品物を受け入れるかは人間が決める。
+
+- **loop-dev**: ループ全体のオーケストレーター。各段階を Subagent に任せ、段階の間の判断だけを行う。GitHub の Issue はドラフト PR、ローカルの Issue はベースブランチへの squash マージで納品する。新しい Issue は README などから読み取れるプロジェクトの目標と現状の差から起票し、明確な案が無ければ起票しない。`/loop-dev:loop-dev` で起動する。
+- **pick-issue**: ready の Issue から、優先度・Issue 間の依存・リポジトリの状態で次の 1 件を選んで確保する。受け入れ条件が無い、記述が矛盾しているなど、人間が直さないと着手できない Issue は blocked にして差し戻す。
+- **concurrent-dev**: 同名スキルの loop-dev 向けの版。計画を `plan.json` に書き、スクリプトによる機械検査と、文脈を共有しない Subagent によるチェックリスト審査を通してから着手する。
+- **create-issue**: 同名スキルの loop-dev 向けの版。ローカルの Issue に frontmatter（`status`、`priority`）を付ける。
+- **git-commit**、**gh-pr-create**、**gh-pr-update**: 同名スキルと同じ内容。
+
 ### playwright-cli-auth
 
 playwright-cli で認証をユーザーに行わせるスキル。

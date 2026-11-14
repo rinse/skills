@@ -1,0 +1,397 @@
+export const meta = {
+  name: 'loop-dev',
+  description: 'Issue を1件取り、concurrent-dev で実装 → 独立検証 → 納品（PR またはベースブランチへのマージ）します。/loop を組み合わせてループエンジニアリングを実現します。',
+  phases: ['Pick', 'Prepare', 'Develop', 'Verify', 'Deliver'],
+}
+
+// ---------------------------------------------------------------------------
+// 設定（/loop-dev 実行時に args で上書き可）
+//   例: Run /loop-dev with { tracker: "local", issue: "0012-add-export" }
+// ---------------------------------------------------------------------------
+const cfg = {
+  tracker: 'auto',          // 'auto' | 'local' | 'github' | 'custom'
+  trackerGuide: null,       // tracker='custom' のとき、4操作（一覧/読む/状態変更/コメント）の手順を文章で渡す
+  issuesDir: null,          // local: Issue フォルダ。未指定なら issues/ → docs/issues/ の順で探す
+  issue: null,              // ID 指定時は選定をスキップ
+  baseBranch: null,         // 未指定: 起動時のブランチ
+  deliver: 'auto',          // 'auto' | 'pr' | 'merge'（auto: GitHub で PR を作れる環境なら pr、でなければ baseBranch へのマージ）
+  prSkill: 'gh-pr-create',  // deliver=pr のときに使うスキル
+  draft: true,              // 人間の verdict を残すため既定はドラフト
+  status: { ready: 'ready', claimed: 'in-progress', human: 'needs-human', review: 'loop-review' },
+  branchPrefix: 'loop/',
+  maxFixRounds: 1,          // 検証 fail 時の自動修正ラウンド数
+  staleHours: 24,           // これより古い claimed は中断扱いで human へ
+  parallelVerify: true,     // テストがポート/DB を奪い合うなら false
+  verifyModel: undefined,   // 検証役のモデル（未指定はセッションのモデル）
+  ...(args && typeof args === 'object' ? args : {}),
+}
+const S = cfg.status
+
+// ---------------------------------------------------------------------------
+// トラッカーアダプタ: 4操作の手順を文章で定義する。GitHub 依存はここだけ。
+// ---------------------------------------------------------------------------
+const guides = {
+  local: base => `【トラッカー: ローカルファイル】
+- 場所: ${cfg.issuesDir ? cfg.issuesDir : 'リポジトリ直下の issues/、無ければ docs/issues/'} の *.md。1ファイル = 1 Issue。
+  ID はファイル名から拡張子を除いたもの。タイトルは最初の見出し。
+- 状態: 先頭の YAML frontmatter の status: の値。frontmatter や status が無いファイルは対象外（勝手に付けない）。
+- 一覧: フォルダ内の全ファイルの frontmatter を読む。古い順 = ファイル名の昇順。
+- 読む: ファイル全文（末尾の「## loop-dev log」も含む）。
+- 状態変更: status: を書き換え、status_changed: に date -u +%Y-%m-%dT%H:%M:%SZ の値を書く。
+- コメント: ファイル末尾の「## loop-dev log」節（無ければ作る）に「### <UTC時刻>」付きで追記。
+- 状態が変わった時刻: status_changed: の値。
+- 書き込みの規則: 必ずブランチ ${base} 上で行う。別のブランチにいる場合は、作業ツリーが汚れていれば
+  git stash -u -m "loop-dev/<ID>" してから git switch ${base}。
+  対象の Issue ファイルだけを編集し、git add <そのファイル> && git commit -m "chore(issue): <ID> <変更内容>"。push はしない。`,
+
+  github: () => `【トラッカー: GitHub Issues（gh CLI）】
+- ID は Issue 番号。状態はラベルで表す（状態ラベルは同時に1つだけ）。
+- 一覧: gh issue list --state open --label <状態> --json number,title,labels,createdAt --limit 50。古い順 = createdAt の昇順。
+- 読む: gh issue view <ID> --json title,body,comments
+- 状態変更: gh issue edit <ID> --remove-label <旧状態> --add-label <新状態>
+- コメント: 本文を一時ファイルに書き、gh issue comment <ID> --body-file <file>
+- 状態が変わった時刻: gh api repos/{owner}/{repo}/issues/<ID>/events でそのラベルが付いた時刻。`,
+
+  custom: () => `【トラッカー: カスタム】\n${cfg.trackerGuide}`,
+}
+
+// ---------------------------------------------------------------------------
+// スキーマ
+// ---------------------------------------------------------------------------
+const str = { type: 'string' }
+const strs = { type: 'array', items: str }
+
+const PICK = {
+  type: 'object',
+  required: ['found', 'reason'],
+  properties: {
+    found: { type: 'boolean' },
+    reason: str,
+    backend: { type: 'string', enum: ['local', 'github', 'custom'] },
+    base: str,          // 基準ブランチ名（例: main）
+    baseRef: str,       // 分岐元・差分の基準（例: origin/main または main）
+    prAvailable: { type: 'boolean' },
+    issue: {
+      type: 'object',
+      required: ['id', 'title'],
+      properties: { id: str, title: str, location: str },
+    },
+  },
+}
+
+const SPEC = {
+  type: 'object',
+  required: ['goal', 'acceptanceCriteria', 'constraints', 'blockingQuestions'],
+  properties: { goal: str, acceptanceCriteria: strs, constraints: strs, blockingQuestions: strs },
+}
+
+const OK = {
+  type: 'object',
+  required: ['ok'],
+  properties: { ok: { type: 'boolean' }, error: str, url: str },
+}
+
+const DEV = {
+  type: 'object',
+  required: ['status', 'summary'],
+  properties: {
+    status: { type: 'string', enum: ['done', 'blocked', 'failed'] },
+    summary: str,
+    questions: strs,
+    concerns: strs,
+    droppedTasks: strs,
+  },
+}
+
+const VERDICT = {
+  type: 'object',
+  required: ['verdict', 'evidence'],
+  properties: { verdict: { type: 'string', enum: ['pass', 'fail', 'unclear'] }, evidence: str },
+}
+
+const SCOPE = {
+  type: 'object',
+  required: ['outOfScope'],
+  properties: {
+    outOfScope: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['location', 'description'],
+        properties: { location: str, description: str },
+      },
+    },
+  },
+}
+
+// ---------------------------------------------------------------------------
+// ヘルパー
+// ---------------------------------------------------------------------------
+const call = async (prompt, opts) => {
+  const r = await agent(prompt, opts)
+  if (r === null) throw new Error(`agent stopped or failed: ${opts.label}`)
+  return r
+}
+
+const NO_HUMAN = `
+これは無人の自動ループ内の実行です。人間に質問・確認を求めてはいけません。
+判断がつかない場合は推測で進めず、その旨を結果に書いて終了してください。`
+
+let issue = null
+let base = null
+let baseRef = null
+let branch = null
+let T = null // 確定したトラッカーの手順
+
+const escalate = async (stage, detail) => {
+  await call(
+    `Issue「${issue.id}」を人間に差し戻す。${NO_HUMAN}
+${T}
+
+1. 次の内容をもとに、Issue と同じ言語で構造化したコメントを投稿する。
+   見出し: 「loop-dev: 人間の判断が必要です」
+   含める項目: 停止した段階 / 理由の要約 / 人間に決めてほしいこと（箇条書き）/ 作業ブランチ（あれば）/ stash したならその名前
+   段階: ${stage}
+   詳細(JSON): ${JSON.stringify(detail)}
+   作業ブランチ: ${branch ?? 'なし'}
+2. 状態を "${S.claimed}" → "${S.human}" に変更する。
+3. 最後にブランチ ${base} に戻っておく（作業ツリーが汚れていれば git stash -u -m "loop-dev/${issue.id}" してから）。
+   作業ブランチは削除しない。他の Issue には触れないこと。`,
+    { label: `escalate:${issue.id}`, model: 'haiku', schema: OK },
+  )
+  return { issue: issue.id, outcome: 'needs-human', stage }
+}
+
+// ---------------------------------------------------------------------------
+// Pick: 前提確認・トラッカー判定・中断分の回収・選定・確保
+// ---------------------------------------------------------------------------
+phase('Pick')
+const BASE_PLACEHOLDER = '（手順2で決めた基準ブランチ）'
+const candidates = cfg.tracker === 'auto'
+  ? `次のどちらを使うか判定する: git remote get-url origin が github.com を指し、かつ gh auth status が成功すれば github、それ以外は local。
+${guides.github()}
+
+${guides.local(BASE_PLACEHOLDER)}`
+  : `backend は "${cfg.tracker}" に固定。\n${guides[cfg.tracker](BASE_PLACEHOLDER)}`
+
+const picked = await call(
+  `自動開発ループの入口として、着手する Issue を1件選んで確保する。${NO_HUMAN}
+
+1. 前提確認: git status --porcelain が空であること。満たされなければ何も変更せず found=false、reason に理由。
+2. 基準ブランチ(base): ${cfg.baseBranch
+    ? `"${cfg.baseBranch}"。`
+    : 'origin があれば git fetch origin のうえ、その既定ブランチ名（git symbolic-ref --short refs/remotes/origin/HEAD から origin/ を除いたもの）。origin が無ければ現在のブランチ名。'}
+   現在のブランチが base でなければ git switch する。
+3. トラッカー(backend): ${candidates}
+4. 分岐元(baseRef): backend が local、または origin が無ければ base そのもの。それ以外は origin/<base>。
+5. prAvailable: origin があり、そこへ PR / MR を作る手段（例: GitHub なら認証済みの gh）が使えるなら true。
+6. 中断分の回収: 状態 "${S.claimed}" の Issue のうち、その状態になってから ${cfg.staleHours} 時間以上
+   経っているもの（現在時刻は date -u）を "${S.human}" に変更し、
+   「前回の loop-dev 実行が中断されたため差し戻します」とコメントする。回収したものは選ばない。
+7. 選定: ${cfg.issue
+    ? `Issue「${cfg.issue}」を対象とする。状態が "${S.ready}" でなければ found=false。`
+    : `状態 "${S.ready}" の Issue のうち最も古いもの。無ければ found=false, reason="no-ready-issues"。`}
+8. 確保: 状態を "${S.ready}" → "${S.claimed}" に変更し、「loop-dev: 着手しました（branch: ${cfg.branchPrefix}<ID>）」とコメント。
+issue.id には ID を文字列で、issue.location には URL またはファイルパスを入れる。
+手順6・8以外で Issue を変更しないこと。`,
+  { label: 'pick', model: 'haiku', schema: PICK },
+)
+
+if (!picked.found) {
+  log(`対象なし: ${picked.reason}`)
+  return { outcome: 'idle', reason: picked.reason }
+}
+
+issue = picked.issue
+base = picked.base
+baseRef = picked.baseRef
+T = guides[picked.backend](base)
+branch = `${cfg.branchPrefix}${issue.id}`.replace(/[^A-Za-z0-9._\/-]/g, '-')
+const deliver = cfg.deliver === 'auto' ? (picked.prAvailable ? 'pr' : 'branch') : cfg.deliver
+log(`[${picked.backend}] ${issue.id} ${issue.title}（納品: ${deliver}）`)
+
+try {
+  // -------------------------------------------------------------------------
+  // Prepare: Issue の解釈 → ブランチ作成
+  // -------------------------------------------------------------------------
+  phase('Prepare')
+  const spec = await call(
+    `Issue「${issue.id}」を読み、実装と検証の基準を抽出する。何も変更しない。${NO_HUMAN}
+${T}
+
+- goal: 目的を1〜2文で。
+- acceptanceCriteria: 承認条件を原文どおり、1項目ずつ。書かれていなければ空配列。
+- constraints: 制限事項（実装上の制約・好み・決定済み事項）を原文どおり、1項目に1つの制約になるよう分割。
+- blockingQuestions: これに答えが無いと実装方針が決まらない、という曖昧さだけを列挙。
+  好みや細部の不明点はここに含めない。無ければ空配列。`,
+    { label: `spec:${issue.id}`, model: 'sonnet', schema: SPEC },
+  )
+
+  if (spec.acceptanceCriteria.length === 0) {
+    return await escalate('Prepare', { reason: 'Issue に承認条件がありません' })
+  }
+  if (spec.blockingQuestions.length > 0) {
+    return await escalate('Prepare', { questions: spec.blockingQuestions })
+  }
+
+  const prep = await call(
+    `作業ブランチを用意する。${NO_HUMAN}
+1. ローカル${baseRef.startsWith('origin/') ? 'かリモート' : ''}に ${branch} が既にあれば何もせず ok=false, error="branch-exists"。
+2. 無ければ git switch -c ${branch} ${baseRef}`,
+    { label: `branch:${issue.id}`, model: 'haiku', schema: OK },
+  )
+  if (!prep.ok) return await escalate('Prepare', { error: prep.error })
+
+  // -------------------------------------------------------------------------
+  // Develop: concurrent-dev をループモードで実行
+  // -------------------------------------------------------------------------
+  phase('Develop')
+  const dev = await call(
+    `concurrent-dev スキルを使って Issue「${issue.id}」（${issue.location ?? ''}）を実装する。
+正となる仕様は Issue そのもの（読み方は下記。Issue への書き込みはしない）。参考として抽出済みの基準を添える:
+${JSON.stringify(spec, null, 2)}
+
+${T}
+
+ループモードとして、スキルの手順を次のとおり読み替える。${NO_HUMAN}
+- ベースブランチは現在のブランチ ${branch}。マージ先も ${branch}。${base} には触れない。
+- 計画の人間承認（手順2の確認）は行わない。代わりに計画表を作った後、自分で次を確認する:
+  a. 各タスクが上記 acceptanceCriteria のどれを満たすためのものか対応付ける。
+     どれにも対応しないタスクは実行せず droppedTasks に記録する。
+  b. constraints を1項目ずつ計画と照合する。違反するか、どちらとも決められない項目があれば
+     実装に入らず status="blocked" とし、questions に人間に決めてほしいことを書いて終了する。
+- 実装中に、Issue の記述同士やテストと Issue が食い違う場合も、どちらかを選ばず blocked で終了する。
+- push も PR 作成もしない。最終チェックまで完了したら status="done"。
+- 手順を最後まで進められない技術的な失敗は status="failed"。
+- summary には、マージしたコミットとレビューで直した点を簡潔に。concerns には残る懸念を。`,
+    { label: `dev:${issue.id}`, schema: DEV },
+  )
+
+  if (dev.status !== 'done') return await escalate('Develop', dev)
+
+  // -------------------------------------------------------------------------
+  // Verify: 実装者の説明を見せず、差分と Issue だけで項目ごとに判定
+  // -------------------------------------------------------------------------
+  const DIFF = `git diff ${baseRef}...${branch}`
+  const JUDGE = `
+あなたは実装者ではない独立した検証者。実装者の説明は与えられていない。
+Issue「${issue.id}」と ${DIFF} とリポジトリの現状だけで判断する。
+ファイルの編集・コミット・ブランチ操作・Issue への書き込みはしないこと（テストやビルドの実行は可）。
+疑わしきは pass にしない。pass には具体的な根拠（実行したコマンドと結果、または ファイル:行 と該当箇所）が必須。
+根拠を示せなければ fail。人間の好みや文脈が無いと決められない場合だけ unclear。
+${T}`
+
+  const verify = async (round) => {
+    const tasks = [
+      ...spec.acceptanceCriteria.map((c, i) => () => call(
+        `承認条件を1つだけ検証する。${JUDGE}\n承認条件: ${c}`,
+        { label: `r${round}:criterion${i + 1}`, model: cfg.verifyModel, schema: VERDICT },
+      ).then(v => ({ kind: 'criterion', item: c, ...v }))),
+      ...spec.constraints.map((c, i) => () => call(
+        `制限事項を1つだけ検査し、差分がこれに違反していないか判定する。
+違反または違反の疑いがあれば、差分の該当行を引用すること。${JUDGE}\n制限事項: ${c}`,
+        { label: `r${round}:constraint${i + 1}`, model: cfg.verifyModel, schema: VERDICT },
+      ).then(v => ({ kind: 'constraint', item: c, ...v }))),
+    ]
+    const scopeTask = () => call(
+      `差分の中から、次の承認条件のどれにも対応しない変更（スコープ外の変更）を列挙する。
+テストの追加・必要なリファクタリングなど、承認条件を満たすために必要な変更はスコープ内とみなす。
+何も変更しない。
+承認条件:\n${spec.acceptanceCriteria.map(c => `- ${c}`).join('\n')}\n差分: ${DIFF}`,
+      { label: `r${round}:scope`, model: cfg.verifyModel, schema: SCOPE },
+    )
+
+    let results
+    let scope
+    if (cfg.parallelVerify) {
+      const all = await parallel([...tasks, scopeTask])
+      scope = all.pop()
+      results = all
+    } else {
+      results = []
+      for (const t of tasks) results.push(await t())
+      scope = await scopeTask()
+    }
+    return { results, scope }
+  }
+
+  phase('Verify')
+  let v = await verify(0)
+  const failures = r => [
+    ...r.results.filter(x => x.verdict === 'fail'),
+    ...r.scope.outOfScope.map(o => ({ kind: 'out-of-scope', item: o.location, evidence: o.description })),
+  ]
+  const unclear = r => r.results.filter(x => x.verdict === 'unclear')
+
+  for (let round = 1; round <= cfg.maxFixRounds; round++) {
+    if (unclear(v).length > 0 || failures(v).length === 0) break
+    await call(
+      `ブランチ ${branch} 上で、独立検証で見つかった問題だけを直す。${NO_HUMAN}
+- 既存のコミット済みテストは変更しない。
+- out-of-scope の変更は取り消す。
+- 指摘以外の改善はしない。直したらテスト・ビルド・lint を通し、1行のメッセージでコミットする。
+- push はしない。Issue には書き込まない。
+指摘:\n${JSON.stringify(failures(v), null, 2)}`,
+      { label: `fix${round}:${issue.id}` },
+    )
+    v = await verify(round)
+  }
+
+  if (unclear(v).length > 0) {
+    return await escalate('Verify', { unclear: unclear(v), failures: failures(v) })
+  }
+  if (failures(v).length > 0) {
+    return await escalate('Verify', { failures: failures(v) })
+  }
+
+  // -------------------------------------------------------------------------
+  // Deliver: 納品（PR またはローカルブランチ）と記録
+  // -------------------------------------------------------------------------
+  phase('Deliver')
+  const evidence = JSON.stringify(
+    v.results.map(r => ({ kind: r.kind, item: r.item, evidence: r.evidence })), null, 2)
+
+  let delivered = `ブランチ ${branch}（未 push）。取り込むには: git switch ${base} && git merge --squash ${branch}`
+  if (deliver === 'pr') {
+    const pr = await call(
+      `${cfg.prSkill} スキルを使って、現在のブランチ ${branch} から ${base} への PR（MR）を作る。${NO_HUMAN}
+ループモードとして次のとおり読み替える:
+- 作成前の人間承認は行わない（このワークフローの起動をもって承認済み）。
+- ${cfg.draft ? 'ドラフトとして作成する。' : '通常の PR として作成する。'}
+- 本文に Issue「${issue.id}」（${issue.location ?? ''}）への参照を入れる。
+  ホストに Issue を自動で閉じる記法があり、Issue が同じホストにある場合はそれを使う。
+- 本文の末尾に次の検証結果の要約（項目ごとの pass と根拠を簡潔に）を含める:
+${evidence}
+- 残る懸念: ${JSON.stringify(dev.concerns ?? [])}
+- push に失敗したら再試行せず ok=false, error に理由。
+成功したら ok=true, url に PR の URL。`,
+      { label: `pr:${issue.id}`, model: 'sonnet', schema: OK },
+    )
+    if (!pr.ok) return await escalate('Deliver', { error: pr.error })
+    delivered = pr.url
+  }
+
+  await call(
+    `Issue「${issue.id}」に loop-dev の実行記録を残す。${NO_HUMAN}
+${T}
+
+1. Issue と同じ言語で、次を含むコメントを投稿する:
+   納品物: ${delivered}
+   実装の要約: ${dev.summary}
+   検証結果（項目ごとの根拠）: ${deliver === 'pr' ? 'PR 本文を参照' : evidence}
+   実行しなかったタスク: ${JSON.stringify(dev.droppedTasks ?? [])}
+   残る懸念: ${JSON.stringify(dev.concerns ?? [])}
+2. 状態を "${S.claimed}" → "${S.review}" に変更する。
+3. 最後にブランチ ${base} に戻っておく。作業ブランチ ${branch} は削除しない。`,
+    { label: `record:${issue.id}`, model: 'haiku', schema: OK },
+  )
+
+  return { issue: issue.id, outcome: deliver === 'pr' ? 'pr-created' : 'branch-ready', delivered }
+} catch (e) {
+  // エージェントの停止・API エラー時。差し戻しも失敗した場合は
+  // claimed のまま残り、次回の Pick で staleHours 経過後に回収される。
+  try {
+    await escalate('Error', { error: String(e) })
+  } catch (_) {}
+  throw e
+}
