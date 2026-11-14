@@ -1,6 +1,6 @@
 ---
 name: loop-dev
-description: Work through ready issues in a loop. Pick an issue, implement it with concurrent-dev, deliver it, and file new issues toward the project goals. Use when asked to run the development loop over the issue backlog (loop-dev を回して, ready の Issue を順に片付けて).
+description: Work through ready issues in a loop. Pick an issue, implement it with concurrent-dev, deliver it, and file new issues toward the project goals. Use when asked to run the development loop over the issue backlog (loop-dev を回して, Issue を消化して).
 license: MIT
 metadata:
   author: rinse <rinse418@gmail.com>
@@ -9,7 +9,7 @@ metadata:
 
 # Loop Dev
 
-ready の Issue を 1 件ずつ、選定 → 実装 → 納品 → 新しい Issue の起票 の順に処理し、ready の Issue が無くなるまで繰り返すスキルです。
+Issue を 1 件ずつ、選定 → 実装 → 納品 → 新しい Issue の起票 の順に処理し、処理できる Issue が無くなるまで繰り返すスキルです。
 
 ## このスキルの核
 
@@ -49,7 +49,7 @@ ready の Issue を 1 件ずつ、選定 → 実装 → 納品 → 新しい Iss
 - **GitHub の Issue**: gh-pr-create スキルで、作業ブランチからベースブランチへのドラフト PR を作る。本文に `Closes #<番号>` と、受け入れ条件ごとの対応、残る懸念を入れる。loop-dev の起動をもって了承済みとし、作成前の確認はしない。push に失敗したら繰り返さず、差し戻しに回す。
 - **ローカルの Issue**: ベースブランチで `git merge --squash` し、Issue ファイルの `status` を `done` にして、同じコミットに含める。test / build / lint を流し、通ったら作業ブランチを消す。コンフリクトや失敗があれば取り込みを取り消し、差し戻しに回す。
 
-ブランチの削除は環境によって禁止されています。削除は他のコマンドとつなげずに単独で実行し、拒否されたら回避せず、残ったブランチを終了時の報告に含めます。差し戻しにはしません。
+ブランチの削除は環境によって禁止されている場合があります。削除は他のコマンドとつなげずに単独で実行し、拒否されたら回避せず、残ったブランチを終了時の報告に含めます。差し戻しにはしません。
 
 ### 4. 新しい Issue の起票
 
