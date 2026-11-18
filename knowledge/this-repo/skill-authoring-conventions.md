@@ -3,7 +3,7 @@ type: Convention
 title: スキル執筆の規約
 description: 本リポジトリのスキルに共通する言語・命名・frontmatter・ファイル構成の取り決め。
 tags: [skill-authoring, convention, frontmatter]
-timestamp: 2026-06-18T00:00:00Z
+timestamp: 2026-11-18T00:00:00Z
 ---
 
 リポジトリ内の全 SKILL.md に共通して観察される、書式上の取り決め。新しいスキルを足すときはこれに倣う。Agent Skills 自体の必須仕様（フィールドの制限値など）は [Skill フォーマットと段階的開示](/agent-skills/skill-format-and-loading.md) を参照。
@@ -20,10 +20,9 @@ timestamp: 2026-06-18T00:00:00Z
 
 # frontmatter
 
-- ほとんどのスキルは **`name` と `description` のみ**（Agent Skills の必須 2 フィールド）。
-- 拡張フィールドを使う例:
-  - `technical-writing-ja`: `metadata.source` に出典 gist の URL。
-  - `playwright-cli-auth`: `allowed-tools: Bash(playwright-cli:*)` でツールを限定。
+- Agent Skills の必須フィールドは `name` と `description` の 2 つだが、本リポジトリで書き起こしたスキルは **`license: MIT` と `metadata.author` / `metadata.source`（リポジトリの URL）** も付ける。新しいスキルは既存スキルの frontmatter をそのまま写す。
+- 外部の資料を元にしたスキルは `license` を付けず、`metadata.source` に出典を書く（`technical-writing-ja` は出典 gist の URL、`dads-ui-design` は出典に加えて `metadata.version` と `metadata.attribution`）。
+- `playwright-cli-auth` は `allowed-tools: Bash(playwright-cli:*)` でツールを限定している。
 - `description` は「何をするか」と「いつ使うか」の両方を含め、末尾に「GitHub only」「Does not fix」のような**適用範囲の限定**を一言添える。他のスキルと発火条件を重ねない（例: 「レビュー指摘に対応」で発火するのは gh-address-review だけで、gh-pr-update はそこから呼ばれる）。広すぎる語（「ログインして」「レビューして」）を単独のトリガーにしない。
 
 # ファイル構成
