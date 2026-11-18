@@ -21,5 +21,5 @@ okf_version: "0.1"
 Anthropic 公式の Agent Skills の仕組み。一次資料（platform docs / engineering blog）に基づく。
 
 * [Skill フォーマットと段階的開示](agent-skills/skill-format-and-loading.md) - SKILL.md の構造・frontmatter の制限値・3 層のロード
-* [スキル執筆のベストプラクティス](agent-skills/authoring-best-practices.md) - eval 駆動・スケール時の分割・code と reference の使い分け
+* [スキル執筆のベストプラクティス](agent-skills/authoring-best-practices.md) - eval 駆動・規則への理由の添付・スケール時の分割・code と reference の使い分け
 * [ランタイムと配布](agent-skills/runtime-and-distribution.md) - Claude Code での配置・サーフェス間の非同期・実行環境の制約・セキュリティ
