@@ -46,4 +46,13 @@ PR 作成は関係者に通知される取り消しづらい操作なので、�
 gh pr create --base <base> --head <branch> --title "feat: ..." --body-file <path> --label "<label>"
 ```
 
+`gh pr`・`gh repo view`・`gh label` が GraphQL の拒否（403）で失敗する環境（Claude のクラウドセッションなど）では、REST に読み替える。draft にするなら `-F draft=true` を足す。ラベルは作成後に付ける。
+
+```
+gh api 'repos/{owner}/{repo}' --jq .default_branch
+gh api 'repos/{owner}/{repo}/labels' --jq '.[] | "\(.name)\t\(.description)"'
+gh api 'repos/{owner}/{repo}/pulls' -f base=<base> -f head=<branch> -f title="feat: ..." -F body=@<path>
+gh api 'repos/{owner}/{repo}/issues/<PR 番号>/labels' -f 'labels[]=<label>'
+```
+
 作成した PR の URL を報告する。

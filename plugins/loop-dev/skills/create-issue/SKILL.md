@@ -73,4 +73,11 @@ Issue 作成はウォッチャーに通知される取り消しづらい操作�
 gh issue create --title "..." --body-file <path> --label "<label>"
 ```
 
+`gh issue` と `gh label` が GraphQL の拒否（403）で失敗する環境（Claude のクラウドセッションなど）では、REST に読み替える。
+
+```
+gh api 'repos/{owner}/{repo}/labels' --jq '.[] | "\(.name)\t\(.description)"'
+gh api 'repos/{owner}/{repo}/issues' -f title="..." -F body=@<path> -f 'labels[]=<label>'
+```
+
 作成した Issue の URL（またはファイルパス）を報告する。
