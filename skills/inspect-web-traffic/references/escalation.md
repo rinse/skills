@@ -5,10 +5,10 @@
 
 ## 1. スクラッチ領域を決める
 
-作業ツリーを汚さないよう、セッションのスクラッチ領域（無ければ `/tmp`）に置く。
+プロファイルと netlog は Cookie・トークンを含むので、コミットに紛れ込まないよう作業ツリーの外の、セッションの一時領域に置く。
 
 ```bash
-WORK="${SCRATCH:-/tmp}/inspect-web-traffic"
+WORK="<作業ツリーの外の、セッションの一時領域>/inspect-web-traffic"
 mkdir -p "$WORK"
 PROFILE="$WORK/chrome-profile"     # 明示プロファイル（ログインセッションがここに残る）
 NETLOG="$WORK/netlog.json"
@@ -56,6 +56,8 @@ curl -s "http://localhost:${PORT}/json/version" --max-time 5
 1. ログイン/captcha を解決しました。
 2. 別の手段を検討してください。
 ```
+
+2 が選ばれたら、起動した Chrome を「7. 後始末」のとおり正常終了させ、`PROFILE` と `NETLOG` の場所を伝え、どの手段に移るかをユーザーと決めるところで止まる。
 
 ## 4. playwright-cli をアタッチする
 

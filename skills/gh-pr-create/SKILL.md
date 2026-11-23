@@ -16,6 +16,7 @@ metadata:
 - `gh` が必要（無ければ導入を提案する。GitHub MCP があればそれで代替してよい）。GitHub リポジトリでなければ対象外。
 - 現在ブランチがデフォルトブランチなら PR は作れない。ブランチを切るよう促す。
 - 未コミットの変更は PR に含まれない。先にコミットするか（git-commit の規約で）、そのまま進めるかを確認する。
+- 現在ブランチに open な PR が既にあれば（`gh pr view` で分かる）、作成せずにその URL を報告して終える。タイトルや本文を差分に合わせ直したいなら gh-pr-update を使うよう伝える。
 
 ## 差分の収集
 
@@ -36,17 +37,18 @@ git --no-pager log origin/<base>..HEAD
 
 ## push
 
-`git push origin <branch>` を一度試す。認証などで失敗したら繰り返さず、そのコマンドを示してユーザーに push を依頼する。
+`git push origin <branch>` を一度試す。認証などで失敗したら繰り返さず、そのコマンドを示してユーザーに push を依頼する。合成したタイトルと本文は捨てずに待ち、push を終えたとユーザーから聞いたら確認と作成に進む。
 
 ## 確認と作成
 
 PR 作成は関係者に通知される取り消しづらい操作なので、タイトル・本文・base/head・ラベルを提示して了承を得てから作成する。本文はファイルに書いて `--body-file` で渡す。draft はユーザーが明示したときだけ。
+却下されたら PR は作らずに終える。push 済みのリモートブランチは通知を伴わず作り直しにも使うので消さず、残っていることを報告する。
 
 ```
 gh pr create --base <base> --head <branch> --title "feat: ..." --body-file <path> --label "<label>"
 ```
 
-`gh pr`・`gh repo view`・`gh label` が GraphQL の拒否（403）で失敗する環境（Claude のクラウドセッションなど）では、REST に読み替える。draft にするなら `-F draft=true` を足す。ラベルは作成後に付ける。
+`gh pr`・`gh repo view`・`gh label` が GraphQL の拒否（403）で失敗する環境（Claude のクラウドセッションなど）では、REST に読み替える。draft にするなら `-F draft=true` を足す。ラベルは作成後に付ける。ラベルの付与だけが失敗したら PR は残し、URL と付かなかったラベルを報告する。
 
 ```
 gh api 'repos/{owner}/{repo}' --jq .default_branch
