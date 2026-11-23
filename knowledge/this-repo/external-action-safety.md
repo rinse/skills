@@ -3,7 +3,7 @@ type: Convention
 title: 外向き操作の安全則
 description: 取り消しづらい外向き操作は実行前に確認し、push はまず試して失敗時にユーザーへ委譲し、既定は保守的に倒す本リポジトリ共通の安全規約。
 tags: [safety, github, git, confirmation]
-timestamp: 2026-06-23T00:00:00Z
+timestamp: 2026-11-23T00:00:00Z
 ---
 
 外部に作用する操作（PR・Issue・レビュー・マージ・リリース・タグ）を扱うスキルに共通する安全側の取り決め。「うっかり外に出す」事故を防ぐための法則。
@@ -31,9 +31,12 @@ push と、push を誘発する操作は、**まず一度試す**（`git push or
 
 # git の規律
 
-- **コミットメッセージは単一行**、conventional-commit 風 prefix（`feat:` / `fix:` / `refactor:` ...）で統一。
-- **`git add -A` は禁止**。対象ファイルを明示列挙する（`git add -u` は可）。`git-commit` の規約で、`concurrent-dev` の Subagent 指示にも引き継がれる。
-- default ブランチ上で作業を始めるときはブランチを切ってから。
+- **コミットに含めるのは今回の作業の変更だけ**。出所の分からない変更や秘密を含みそうなファイルは含めず、報告で挙げる。複数の関心事にまたがる変更は論理単位で分ける。
+- **`git add -A` は禁止**。対象ファイルを明示列挙する（`git add -u` は追跡中の変更がすべて今回の作業の分のときだけ可）。
+- **コミットメッセージは単一行**。prefix・scope・言語は `git log --no-merges` の慣習に合わせ、慣習が無ければ conventional-commit 風 prefix（`feat:` / `fix:` / `refactor:` ...）の英語にする。ユーザーやハーネスが求める trailer は空行を挟んで付けてよい。
+- **default ブランチ上では `git log` で運用を見る**。直接積む運用ならそのままコミットし、マージ・PR 経由の運用ならブランチを切ってから。判断材料が無ければそのままコミットする。
+
+いずれも `git-commit` が受け持ち、コミットを伴う他のスキル（`concurrent-dev` の Subagent を含む）はやり方を書かずに `git-commit` を参照する。
 
 これらは [スキル設計の思想](/this-repo/skill-design-philosophy.md) の「合成主義」「アクションスキルの共通骨格」の確認・後処理ステップに対応する。
 
