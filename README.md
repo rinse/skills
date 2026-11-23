@@ -45,13 +45,8 @@ claude plugin install traceless@rinse --scope project
 
 ### gh-pr-create
 
-現在のブランチから GitHub の Pull Request を作成するスキル。
-差分の全体を読んでタイトルと本文を合成し、リポジトリに PR テンプレートがあればそれに従う。push はまず一度試し、失敗すればユーザーに依頼する。作成前に内容を確認する。GitHub の PR 専用。
-
-### gh-pr-update
-
-既存の GitHub Pull Request の title・description・labels を最新の差分に合わせて更新するスキル。
-レビュー指摘の反映・追加の指示・その他 PR の修正でコードを変えたときに、古い本文へ追記するのではなく現在の差分全体から再合成して、説明が実体とずれないようにする。更新前に変更内容を確認する。GitHub の PR 専用。
+現在のブランチの GitHub Pull Request を作成し、open な PR が既にあればその title・本文・labels を最新の差分に合わせて更新するスキル。
+中間コミットのメッセージや古い本文を流用せず、差分の全体からタイトルと本文を合成する。リポジトリに PR テンプレートがあればそれに従う。更新では、Issue 参照、画像、チェックリストの状態、人が書いた節のように差分から導けない記述を残し、外すラベルは変更の種類を表すものに限る。push はまず一度試し、失敗すればユーザーに依頼する。作成と更新の前に内容を確認する。GitHub の PR 専用。
 
 ### create-issue
 
@@ -66,7 +61,7 @@ GitHub の Pull Request に対してコードレビューを行うスキル。
 ### gh-address-review
 
 自分の PR に付いたレビュー指摘に対応するスキル。
-各指摘を「対応する・押し返す・質問で返す・対応不要と説明する」の 4 つに分類し、分類表と返信文をユーザーに確認してから、修正・返信・スレッドの resolve までを行う。設計意図と衝突する指摘に盲従しないことが核。resolve は修正して push した指摘に限り、押し返しは 1 往復まで。対応後の本文更新は gh-pr-update に委譲する。GitHub の PR 専用。
+各指摘を「対応する・押し返す・質問で返す・対応不要と説明する」の 4 つに分類し、分類表と返信文をユーザーに確認してから、修正・返信・スレッドの resolve までを行う。設計意図と衝突する指摘に盲従しないことが核。resolve は修正して push した指摘に限り、押し返しは 1 往復まで。対応後の本文更新は gh-pr-create に委譲する。GitHub の PR 専用。
 
 ### gh-release
 
@@ -127,7 +122,8 @@ git リポジトリを初期化するスキル。
 - **pick-issue**: ready の Issue から、優先度・Issue 間の依存・リポジトリの状態で次の 1 件を選んで確保する。受け入れ条件が無い、記述が矛盾しているなど、人間が直さないと着手できない Issue は blocked にして差し戻す。
 - **concurrent-dev**: 同名スキルの loop-dev 向けの版。計画を `plan.json` に書き、スクリプトによる機械検査と、文脈を共有しない Subagent によるチェックリスト審査を通してから着手する。
 - **create-issue**: 同名スキルの loop-dev 向けの版。ローカルの Issue に frontmatter（`status`、`priority`）を付ける。
-- **git-commit**、**gh-pr-create**、**gh-pr-update**: 同名スキルと同じ内容。
+- **gh-pr-create**: 同名スキルの loop-dev 向けの版。Subagent として質問せずに動き、起動を了承とみなして作成と更新の確認を省く。base・draft・本文に入れる事項は呼び出し元の指定に従い、判断がつかなければ止まって報告する。
+- **git-commit**: 同名スキルと同じ内容。
 
 ### playwright-cli-auth
 

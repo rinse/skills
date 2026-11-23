@@ -3,7 +3,7 @@ type: Design Principle
 title: スキル設計の思想
 description: 「核（判断）」と機械作業を分離し、合成主義で出力を組み立てる本リポジトリ共通の設計思想と、アクションスキルの共通骨格。
 tags: [skill-authoring, design-principle, philosophy]
-timestamp: 2026-06-18T00:00:00Z
+timestamp: 2026-11-24T00:00:00Z
 ---
 
 個々のスキルの手順の裏にある、繰り返し現れる設計上の判断。これを掴むと「なぜこのスキルはこう書かれているか」が読める。
@@ -23,7 +23,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 入力をそのまま流用せず、**全体を読んで出力を組み立て直す**のが一貫した態度。
 
-- `gh-pr-create` は `gh pr create --fill` を使わない。中間コミットの雑なメッセージを流用せず、差分全体からタイトル・本文を合成する。
+- `gh-pr-create` は `gh pr create --fill` を使わない。中間コミットの雑なメッセージを流用せず、差分全体からタイトル・本文を合成する。既存 PR の更新でも古い本文に追記せず合成し直し、差分から導けない記述だけを残す。
 - `gh-release` のノートも最終的な変更だけを反映し、過程は捨てる。
 - コミットメッセージは単一行 + conventional-commit 風 prefix で統一（[git 規律](/this-repo/external-action-safety.md) 参照）。
 

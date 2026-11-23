@@ -15,7 +15,7 @@
     {
       "name": "loop-dev",
       "source": "./plugins/loop-dev",
-      "description": "loop-dev skill that works through ready issues in a loop (pick, implement with concurrent-dev, deliver, file new issues), with the pick-issue, concurrent-dev, create-issue, git-commit, gh-pr-create, and gh-pr-update skills it builds on.",
+      "description": "loop-dev skill that works through ready issues in a loop (pick, implement with concurrent-dev, deliver, file new issues), with the pick-issue, concurrent-dev, create-issue, git-commit, and gh-pr-create skills it builds on.",
       "version": "0.1.0"
     }
   ]

@@ -66,11 +66,11 @@ gh api graphql -f query='
 
 ## 実行
 
-1. (a) を修正し、git-commit で論理単位ごとにコミットする。未コミットの変更は push にも gh-pr-update の差分にも乗らない。
-2. `git push origin <branch>` を一度試す。認証などで失敗したら繰り返さず、返信・resolve・gh-pr-update にも進まずに止まる。返信だけ先に出すと、(a) が未反映のまま相手に通知が飛ぶ。コミットはローカルに残し、未 push のコミットと未投稿の返信文を報告して push をユーザーに依頼する。
+1. (a) を修正し、git-commit で論理単位ごとにコミットする。未コミットの変更は push にも gh-pr-create が読む差分にも乗らない。
+2. `git push origin <branch>` を一度試す。認証などで失敗したら繰り返さず、返信・resolve・PR の本文の更新にも進まずに止まる。返信だけ先に出すと、(a) が未反映のまま相手に通知が飛ぶ。コミットはローカルに残し、未 push のコミットと未投稿の返信文を報告して push をユーザーに依頼する。
 3. 返信を投稿する。インラインスレッドへの返信は `gh api --method POST /repos/{owner}/{repo}/pulls/<num>/comments/<comment_id>/replies -F body=@<file>`。途中で失敗したら繰り返さず、投稿済みと未投稿のスレッドを報告して止まる。
 4. resolve は修正して push した (a) のスレッドだけ: `gh api graphql -f query='mutation { resolveReviewThread(input: {threadId: "<id>"}) { thread { isResolved } } }'`。(b)(c) は相手の返答待ちなので resolve しない。(d) も原則相手の反応を待つ。
-5. gh-pr-update を呼び、title・body・labels を最新の差分に同期する。
+5. gh-pr-create スキルで、既存 PR の title・body・labels を最新の差分に合わせて更新する。
 6. 直した指摘・押し返した指摘・待ち状態のスレッドを報告する。
 
 ## ガードレール
