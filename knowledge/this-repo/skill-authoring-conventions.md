@@ -28,7 +28,7 @@ timestamp: 2026-11-24T00:00:00Z
 # ファイル構成
 
 - 単純なスキルは `SKILL.md` 1 枚（`git-commit`, `git-bisect`, `external-action-safety` 系の gh スキル）。
-- 大きなスキルは補助ファイルに分割し、SKILL.md から参照する。`okf-knowledge` が典型で、書式仕様を `references/okf-spec.md` に分け、SKILL.md 本文は判断に集中させている。稀にしか通らない経路（`git-init` の `references/install-git-profile.md`、`inspect-web-traffic` の `references/escalation.md`）も同様に分け、本文はいつ開くかだけを書く。これは Agent Skills の Level 3（段階的開示）にあたり、詳しくは [段階的開示](/agent-skills/skill-format-and-loading.md) と [ベストプラクティス](/agent-skills/authoring-best-practices.md) を参照。
+- 大きなスキルは補助ファイルに分割し、SKILL.md から参照する。`okf-knowledge` が典型で、書式仕様を `references/okf-spec.md` に分け、SKILL.md 本文は判断に集中させている。稀にしか通らない経路（`inspect-web-traffic` の `references/escalation.md`）も同様に分け、本文はいつ開くかだけを書く。これは Agent Skills の Level 3（段階的開示）にあたり、詳しくは [段階的開示](/agent-skills/skill-format-and-loading.md) と [ベストプラクティス](/agent-skills/authoring-best-practices.md) を参照。
 - スキル間の参照はプレーンなスキル名の言及で行う。相対リンク（`../git-commit/SKILL.md` 等）はスキルが単体でインストールされると壊れるため使わない。スキルは互いに合成される単位として書かれている（[スキル設計の思想](/this-repo/skill-design-philosophy.md) 参照）。
 
 # Gotcha
