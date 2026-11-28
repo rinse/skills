@@ -1,8 +1,6 @@
 ---
 name: technical-writing-ja
 description: Write, revise, or review Japanese technical prose by first choosing what to keep for the reader and how to order the paragraphs, then applying sentence-level style rules. Use when writing or revising Japanese technical documents (技術文章を書いて, 文章を直して, 文書をレビューして). Japanese prose only.
-metadata:
-  source: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d
 ---
 
 # 日本語技術文書の文章規範
